@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Moonlit Odyssey 🌙</title>
   
-  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  
-  <!-- MediaPipe Face Mesh & Camera Tools -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 
@@ -530,10 +527,6 @@
       font-size: 0.88rem;
       line-height: 1.6;
     }
-
-    #bgmAudioContainer {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -541,7 +534,11 @@
   <div class="stars"></div>
   <div class="lunar-haze"></div>
 
-  <div id="bgmAudioContainer"></div>
+  <!-- DIRECT HTML5 AUDIO ELEMENT -->
+  <audio id="bgmTrack" loop preload="auto">
+    <!-- Replace this URL with your uploaded bgm.mp3 if needed -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-ambient-111306.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- MOON ORBIT -->
   <div class="moon-orbit-container" id="moonContainer">
@@ -739,7 +736,6 @@ that would have been too easy.
       <h3>Visual Match: 100%</h3>
       <p class="match-score">Exact Radiance Coordinates</p>
       <div class="match-img-box">
-        <!-- Temporary Placeholder Image -->
         <img src="https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?auto=format&fit=crop&w=600&q=80" alt="Luna match" id="matchedPhoto" />
       </div>
       <p class="match-desc">
@@ -767,25 +763,21 @@ that would have been too easy.
       const box = document.getElementById('loginCard');
 
       if (user.toLowerCase() === VALID_ID.toLowerCase() && pass === VALID_PASS) {
+        // Direct interaction allows audio to play immediately on phones
+        const audio = document.getElementById('bgmTrack');
+        if (audio) {
+          audio.volume = 0.8;
+          audio.play().catch(e => console.log("Audio waiting for tap:", e));
+        }
+
         document.getElementById('loginWrapper').style.display = 'none';
         document.getElementById('moonContainer').style.display = 'block';
         document.getElementById('disclaimerModal').style.display = 'flex';
-        playBackgroundBGM();
       } else {
         error.style.display = 'block';
         box.classList.add('shake');
         setTimeout(() => box.classList.remove('shake'), 400);
       }
-    }
-
-    function playBackgroundBGM() {
-      const container = document.getElementById('bgmAudioContainer');
-      container.innerHTML = `
-        <iframe width="1" height="1" 
-          src="https://www.youtube.com/embed/VFzgJ6P2gWc?autoplay=1&loop=1&playlist=VFzgJ6P2gWc" 
-          frameborder="0" allow="autoplay; encrypted-media">
-        </iframe>
-      `;
     }
 
     function toggleTerms(checkbox) {
