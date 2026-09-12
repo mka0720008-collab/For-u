@@ -3,85 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moonlit Wishes 🌙</title>
+  <title>Birthday Portal 🌙</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: #060913;
-      color: #e2e8f0;
+      background-color: #030712;
+      color: #f8fafc;
       min-height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow-x: hidden;
+      position: relative;
     }
 
-    /* --- LOGIN OVERLAY (SQUARE) --- */
+    /* Starfield background */
+    .stars {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 40px 70px, #38bdf8, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #e0f2fe, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 250px 180px, #ffffff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 300px 300px;
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    /* --- LOGIN STAGE --- */
     #loginWrapper {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 50;
       padding: 1rem;
+      background: radial-gradient(circle at center, #0b132b 0%, #030712 100%);
     }
 
     .login-box {
-      width: 360px;
-      height: 360px;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      width: 350px;
+      height: 350px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 20px;
-      box-shadow: 0 0 35px rgba(56, 189, 248, 0.15);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
+      backdrop-filter: blur(14px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 2rem 1.5rem;
+      padding: 2rem;
       text-align: center;
     }
 
     .login-box h2 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       color: #38bdf8;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
     .login-box p {
       color: #94a3b8;
       font-size: 0.8rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.2rem;
     }
 
     .dark-input {
       width: 100%;
-      padding: 11px 14px;
+      padding: 10px 14px;
       font-size: 0.95rem;
-      background: rgba(2, 6, 23, 0.8);
+      background: rgba(2, 6, 23, 0.85);
       border: 1px solid #1e293b;
       border-radius: 10px;
       color: #f8fafc;
       outline: none;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.75rem;
       text-align: center;
-      transition: all 0.2s;
+      transition: border-color 0.2s;
     }
 
     .dark-input:focus {
       border-color: #38bdf8;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
     }
 
     .glow-btn {
@@ -89,173 +105,20 @@
       background: linear-gradient(135deg, #0284c7, #0369a1);
       color: white;
       border: 1px solid #38bdf8;
-      padding: 11px;
+      padding: 10px;
       font-size: 0.95rem;
       font-weight: 600;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
       transition: all 0.2s ease;
-    }
-
-    .glow-btn:hover {
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-      transform: translateY(-1px);
     }
 
     .error-msg {
       color: #f87171;
-      font-size: 0.8rem;
-      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
       display: none;
-    }
-
-    /* --- TEMPLATE LAYOUT (REVEALED AFTER LOGIN) --- */
-    #mainSite {
-      display: none;
-      width: 100%;
-      min-height: 100vh;
-      background: radial-gradient(ellipse at top, #0f1e36 0%, #060913 70%);
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Navbar */
-    .navbar {
-      width: 100%;
-      max-width: 1100px;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo span {
-      color: #38bdf8;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #94a3b8;
-    }
-
-    .nav-links a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a.active, .nav-links a:hover {
-      color: #38bdf8;
-    }
-
-    /* Hero Section */
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 1.5rem 3rem;
-      max-width: 800px;
-    }
-
-    .moon-glow {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #e0f2fe 30%, #38bdf8 80%);
-      box-shadow: 0 0 50px rgba(56, 189, 248, 0.7), 0 0 100px rgba(56, 189, 248, 0.3);
-      margin-bottom: 2rem;
-      animation: pulse 4s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.96); box-shadow: 0 0 40px rgba(56, 189, 248, 0.6); }
-      100% { transform: scale(1.04); box-shadow: 0 0 70px rgba(56, 189, 248, 0.9); }
-    }
-
-    .hero h1 {
-      font-size: 2.3rem;
-      font-weight: 300;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #ffffff;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: #94a3b8;
-      max-width: 600px;
-      margin-bottom: 2rem;
-    }
-
-    .action-btn {
-      background: transparent;
-      border: 1px solid #38bdf8;
-      color: #38bdf8;
-      padding: 10px 28px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-      transition: all 0.3s;
-    }
-
-    .action-btn:hover {
-      background: #38bdf8;
-      color: #030712;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
-    }
-
-    /* Bottom Feature Circles */
-    .icon-bar {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2.5rem 1rem 3rem;
-      width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(3, 7, 18, 0.5);
-    }
-
-    .circle-card {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #0284c7 0%, #082f49 100%);
-      border: 1px solid #38bdf8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5rem;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .circle-card:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
     }
 
     .shake {
@@ -268,21 +131,211 @@
       50% { transform: translateX(8px); }
     }
 
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .hero h1 { font-size: 1.7rem; }
-      .icon-bar { gap: 1rem; }
-      .circle-card { width: 55px; height: 55px; font-size: 1.2rem; }
+    /* --- ROTATING & ORBITING MOON --- */
+    .moon-orbit-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      display: none;
+    }
+
+    .traveling-moon {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 55%, #64748b 100%);
+      box-shadow: 0 0 45px rgba(224, 242, 254, 0.85), 0 0 100px rgba(56, 189, 248, 0.45);
+      animation: orbitSky 24s infinite ease-in-out, moonSelfRotate 16s infinite linear;
+    }
+
+    /* Crater illusion details */
+    .traveling-moon::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(100, 116, 139, 0.25);
+      border-radius: 50%;
+      top: 30px;
+      left: 25px;
+      box-shadow: 25px 20px 0 2px rgba(100, 116, 139, 0.2), 35px -5px 0 -2px rgba(100, 116, 139, 0.2);
+    }
+
+    @keyframes orbitSky {
+      0% {
+        transform: translate(-120px, 85vh);
+        opacity: 0.3;
+      }
+      20% {
+        opacity: 1;
+      }
+      50% {
+        transform: translate(calc(50vw - 50px), 6vh);
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(100vw + 120px), 85vh);
+        opacity: 0.3;
+      }
+    }
+
+    @keyframes moonSelfRotate {
+      0% { filter: drop-shadow(0 0 25px #38bdf8) rotate(0deg); }
+      100% { filter: drop-shadow(0 0 25px #38bdf8) rotate(360deg); }
+    }
+
+    /* --- DISCLAIMER POPUP MODAL --- */
+    #disclaimerModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .disclaimer-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 20px;
+      max-width: 580px;
+      width: 100%;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 50px rgba(56, 189, 248, 0.25);
+      position: relative;
+    }
+
+    .disclaimer-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      text-align: center;
+    }
+
+    .disclaimer-header h3 {
+      font-size: 1.2rem;
+      color: #38bdf8;
+      letter-spacing: 1px;
+    }
+
+    .disclaimer-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      white-space: pre-line;
+      text-align: left;
+    }
+
+    .disclaimer-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .disclaimer-body::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 10px;
+    }
+
+    /* Footer: Checkbox & Moving Next Button */
+    .disclaimer-footer {
+      padding: 1rem 1.5rem 1.4rem;
+      border-top: 1px solid rgba(56, 189, 248, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      position: relative;
+      min-height: 110px;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #f1f5f9;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-container input {
+      width: 18px;
+      height: 18px;
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+
+    #evasiveBtn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #030712;
+      font-weight: 700;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      transition: top 0.25s ease-out, left 0.25s ease-out, transform 0.15s ease;
+      position: relative;
+      user-select: none;
+    }
+
+    #evasiveBtn:disabled {
+      background: #334155;
+      color: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* --- FINAL WELCOME SCREEN --- */
+    #finalWelcome {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    #finalWelcome h1 {
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+    }
+
+    #finalWelcome p {
+      max-width: 500px;
+      color: #94a3b8;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. SQUARE LOGIN OVERLAY -->
+  <div class="stars"></div>
+
+  <!-- MOON ORBIT BACKGROUND -->
+  <div class="moon-orbit-container" id="moonContainer">
+    <div class="traveling-moon"></div>
+  </div>
+
+  <!-- 1. SQUARE LOGIN CARD -->
   <div id="loginWrapper">
     <div class="login-box" id="loginCard">
       <h2>Restricted Access</h2>
-      <p>Authenticate to illuminate the moon</p>
+      <p>Authenticate to initiate orbit</p>
       <input type="text" id="idInput" class="dark-input" placeholder="Login ID" autocomplete="off" />
       <input type="password" id="passInput" class="dark-input" placeholder="Password" />
       <button class="glow-btn" onclick="checkCredentials()">Enter 🪐</button>
@@ -290,40 +343,143 @@
     </div>
   </div>
 
-  <!-- 2. DARK MOON TEMPLATE -->
-  <div id="mainSite">
-    <nav class="navbar">
-      <div class="logo">◯ <span>MOON</span></div>
-      <div class="nav-links">
-        <a href="#" class="active">HOME</a>
-        <a href="#message">MEMORIES</a>
-        <a href="#message">WISHES</a>
+  <!-- 2. DISCLAIMER MODAL -->
+  <div id="disclaimerModal">
+    <div class="disclaimer-card">
+      <div class="disclaimer-header">
+        <h3>⚠️ OFFICIAL DISCLAIMER ⚠️</h3>
       </div>
-    </nav>
+      <div class="disclaimer-body">
+Please read before proceeding.
 
-    <main class="hero">
-      <div class="moon-glow"></div>
-      <h1>Happy Birthday, Luna</h1>
-      <p id="message">
-        To someone who brings so much light even on the quietest nights. 
-        Wishing you an incredible year ahead filled with peace, boundless adventures, and laughter that echoes under every night sky.
-      </p>
-      <button class="action-btn" onclick="triggerFireworks()">Make a Wish ✨</button>
-    </main>
+Welcome to this completely unnecessary, slightly suspicious, emotionally questionable, and excessively over-engineered birthday website.
 
-    <!-- Bottom Circular Buttons -->
-    <div class="icon-bar">
-      <div class="circle-card" onclick="alert('🏆 You deserve the brightest year ahead!')">🏆</div>
-      <div class="circle-card" onclick="alert('✈️ Here is to endless new journeys!')">✈️</div>
-      <div class="circle-card" onclick="triggerFireworks()">🎉</div>
-      <div class="circle-card" onclick="alert('⭐ Stay luminous, always.')">⭐</div>
+Before you continue, please understand that this website was created with far more effort than was logically required for a birthday wish.
+
+Why?
+
+No reasonable explanation is currently available.
+
+The creator would like to formally state that:
+
+- This website was not made because normal birthday wishes are insufficient.
+- It was definitely not made because someone was given too much free time.
+- It contains an unreasonable amount of thoughts, memories, tiny details, and probably unnecessary animations.
+- Any resemblance to actual emotional attachment is purely…
+  well, you'll have to decide that yourself.
+- The creator takes zero responsibility for unexpected smiling, nostalgia, embarrassment, confusion, or the sudden urge to say, “Why did you actually make all this?”
+- There may be references to old memories that the creator remembers suspiciously well.
+- Some memories may seem completely ordinary to everyone else.
+- Unfortunately, the creator has decided that “ordinary” memories deserve their own museum.
+
+⚠️ IMPORTANT SAFETY NOTICE
+
+If you are expecting a simple:
+
+«“Happy Birthday! 🎂❤️ Have a great day!”»
+
+I sincerely apologize.
+
+You have arrived at the wrong place.
+
+This website has been unnecessarily upgraded to:
+
+✨ Version 1.0 — Birthday Edition ✨
+
+with additional features including:
+
+🌙 Moon-related nonsense
+⭐ Excessive stars
+📜 Questionable levels of nostalgia
+💌 Potentially dangerous amounts of text
+😂 Occasional stupidity
+🫠 Possible emotional damage
+🎂 And, of course, a birthday
+
+TERMS & CONDITIONS
+
+By clicking “Enter”, you acknowledge that:
+
+1. You may encounter memories you had completely forgotten.
+
+2. You may discover that someone actually remembers tiny things you thought nobody noticed.
+
+3. You are legally required to smile at least once.
+
+4. Complaining about the amount of effort involved will not result in a refund.
+
+5. Asking “Why did you do this?” is a perfectly valid question.
+
+Unfortunately, there is no guaranteed answer.
+
+6. If you cry, the creator will claim it was because the website was too beautiful.
+
+7. If you laugh, the creator will consider the project successful.
+
+8. If you get embarrassed, please remember:
+
+«You clicked Enter.
+Nobody forced you.»
+
+🚨 FINAL WARNING
+
+There is a possibility that somewhere inside this website are things that aren't really meant to be called important.
+
+Just little moments.
+
+Little conversations.
+
+Little memories.
+
+Little things that probably meant nothing at the time…
+
+…but somehow stayed.
+
+So if you're ready to enter, proceed carefully.
+
+Take your time.
+
+Click around.
+
+Read everything.
+
+And most importantly—
+
+don't judge the creator for spending an unreasonable amount of time making a birthday website instead of simply typing “HBD.”
+
+Because apparently…
+
+that would have been too easy.
+
+---
+
+🌙 ENTER AT YOUR OWN RISK
+      </div>
+
+      <!-- FOOTER: Checkbox & Evasive Button -->
+      <div class="disclaimer-footer" id="footerZone">
+        <label class="checkbox-container">
+          <input type="checkbox" id="termsCheck" onchange="toggleTerms(this)" />
+          <span>I accept all the terms & conditions unconditionally 🤞</span>
+        </label>
+        <button id="evasiveBtn" disabled onclick="handleNextClick()">Next (0/7)</button>
+      </div>
     </div>
+  </div>
+
+  <!-- 3. FINAL DESTINATION SCREEN -->
+  <div id="finalWelcome">
+    <h1>Welcome, Luna ✨</h1>
+    <p>You survived the disclaimer and caught the button 7 times.<br/>The adventure begins now!</p>
   </div>
 
   <script>
     const VALID_ID = "Luna";
     const VALID_PASS = "7815831798";
+    let clickCount = 0;
+    const TARGET_CLICKS = 7;
 
+    // Login Verification
     function checkCredentials() {
       const user = document.getElementById('idInput').value.trim();
       const pass = document.getElementById('passInput').value.trim();
@@ -332,9 +488,8 @@
 
       if (user.toLowerCase() === VALID_ID.toLowerCase() && pass === VALID_PASS) {
         document.getElementById('loginWrapper').style.display = 'none';
-        const site = document.getElementById('mainSite');
-        site.style.display = 'flex';
-        triggerFireworks();
+        document.getElementById('moonContainer').style.display = 'block';
+        document.getElementById('disclaimerModal').style.display = 'flex';
       } else {
         error.style.display = 'block';
         box.classList.add('shake');
@@ -342,18 +497,81 @@
       }
     }
 
-    function triggerFireworks() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#38bdf8', '#0284c7', '#e0f2fe', '#ffffff']
-      });
+    // Enable/Disable Moving Button
+    function toggleTerms(checkbox) {
+      const btn = document.getElementById('evasiveBtn');
+      if (checkbox.checked) {
+        btn.disabled = false;
+        btn.innerText = `Catch Me! (${clickCount}/${TARGET_CLICKS})`;
+        btn.addEventListener('mouseenter', dodgeButton);
+      } else {
+        btn.disabled = true;
+        btn.innerText = `Next (${clickCount}/${TARGET_CLICKS})`;
+        btn.style.position = 'relative';
+        btn.style.top = '0';
+        btn.style.left = '0';
+        btn.removeEventListener('mouseenter', dodgeButton);
+      }
     }
 
+    // Move button across the viewport safely
+    function dodgeButton() {
+      const termsCheck = document.getElementById('termsCheck');
+      if (!termsCheck.checked) return;
+
+      const btn = document.getElementById('evasiveBtn');
+      btn.style.position = 'fixed';
+
+      // Keep within screen boundaries
+      const pad = 30;
+      const btnWidth = btn.offsetWidth || 130;
+      const btnHeight = btn.offsetHeight || 45;
+
+      const maxX = window.innerWidth - btnWidth - pad;
+      const maxY = window.innerHeight - btnHeight - pad;
+
+      const randX = Math.max(pad, Math.floor(Math.random() * maxX));
+      const randY = Math.max(pad, Math.floor(Math.random() * maxY));
+
+      btn.style.left = `${randX}px`;
+      btn.style.top = `${randY}px`;
+    }
+
+    // 7 Clicks Mechanism
+    function handleNextClick() {
+      const termsCheck = document.getElementById('termsCheck');
+      if (!termsCheck.checked) return;
+
+      clickCount++;
+      const btn = document.getElementById('evasiveBtn');
+      btn.innerText = `Catch Me! (${clickCount}/${TARGET_CLICKS})`;
+
+      // Teleport away immediately after being tapped
+      dodgeButton();
+
+      if (clickCount >= TARGET_CLICKS) {
+        // Unlock next stage
+        document.getElementById('disclaimerModal').style.display = 'none';
+        const welcome = document.getElementById('finalWelcome');
+        welcome.style.display = 'flex';
+
+        // Celebration Confetti
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#38bdf8', '#0284c7', '#e0f2fe', '#ffffff']
+        });
+      }
+    }
+
+    // Enter Key Login Support
     document.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
-        checkCredentials();
+        const loginWrapper = document.getElementById('loginWrapper');
+        if (loginWrapper.style.display !== 'none') {
+          checkCredentials();
+        }
       }
     });
   </script>
