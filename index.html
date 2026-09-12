@@ -8,7 +8,7 @@
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
-  <!-- MediaPipe Face Mesh & Camera Tools for True Eye Detection -->
+  <!-- MediaPipe Face Mesh & Camera Tools -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 
@@ -333,7 +333,6 @@
       100% { top: 0%; opacity: 0.8; }
     }
 
-    /* Eye Detection Status */
     .status-badge {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(56, 189, 248, 0.3);
@@ -356,7 +355,6 @@
       box-shadow: 0 0 10px #f59e0b;
     }
 
-    /* Meters */
     .meters-container {
       width: 100%;
       max-width: 380px;
@@ -408,13 +406,13 @@
       box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
     }
 
-    /* --- EXPLOSION / OVERLOAD OVERLAY --- */
+    /* --- 4. EXPLOSION / OVERLOAD OVERLAY --- */
     #dangerAlert {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: rgba(3, 7, 18, 0.85);
+      background: rgba(3, 7, 18, 0.88);
       backdrop-filter: blur(15px);
       flex-direction: column;
       justify-content: center;
@@ -426,7 +424,7 @@
     .danger-card {
       background: rgba(239, 68, 68, 0.12);
       border: 2px solid #ef4444;
-      box-shadow: 0 0 50px rgba(239, 68, 68, 0.4), inset 0 0 30px rgba(239, 68, 68, 0.2);
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.4);
       border-radius: 24px;
       max-width: 420px;
       padding: 2rem 1.5rem;
@@ -439,9 +437,8 @@
     }
 
     .danger-card h2 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       color: #ef4444;
-      text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 0.8rem;
     }
@@ -453,16 +450,89 @@
       margin-bottom: 1.5rem;
     }
 
-    .final-heart-btn {
-      background: linear-gradient(135deg, #ef4444, #f43f5e);
-      color: white;
+    .similar-img-btn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #030712;
       border: none;
-      padding: 12px 28px;
-      font-size: 0.95rem;
+      padding: 13px 22px;
+      font-size: 0.92rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+      transition: transform 0.15s ease;
+    }
+
+    .similar-img-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* --- 5. SIMILAR IMAGE REVEAL MODAL --- */
+    #imageRevealModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      background: rgba(2, 6, 23, 0.95);
+      backdrop-filter: blur(18px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .match-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(147, 197, 253, 0.3);
+      border-radius: 24px;
+      max-width: 380px;
+      width: 100%;
+      padding: 1.5rem;
+      box-shadow: 0 0 45px rgba(56, 189, 248, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .match-card h3 {
+      font-size: 1.2rem;
+      color: #7dd3fc;
+      margin-bottom: 0.3rem;
+      letter-spacing: 1px;
+    }
+
+    .match-card .match-score {
+      font-size: 0.85rem;
+      color: #38bdf8;
+      margin-bottom: 1.2rem;
+    }
+
+    .match-img-box {
+      width: 220px;
+      height: 220px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(56, 189, 248, 0.4);
+      margin-bottom: 1.2rem;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+    }
+
+    .match-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .match-desc {
+      color: #cbd5e1;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    #bgmAudioContainer {
+      display: none;
     }
   </style>
 </head>
@@ -470,6 +540,8 @@
 
   <div class="stars"></div>
   <div class="lunar-haze"></div>
+
+  <div id="bgmAudioContainer"></div>
 
   <!-- MOON ORBIT -->
   <div class="moon-orbit-container" id="moonContainer">
@@ -622,10 +694,9 @@ that would have been too easy.
 
     <div class="status-badge" id="eyeStatus">
       <div class="pulse-dot" id="statusDot"></div>
-      <span id="statusText">Looking for your eyes... Look at the screen 👀</span>
+      <span id="statusText">Looking for your eyes... Look into the mirror 👀</span>
     </div>
 
-    <!-- Cuteness & Sweetness Meters -->
     <div class="meters-container">
       <div class="meter-box">
         <div class="meter-label">
@@ -654,12 +725,26 @@ that would have been too easy.
     <div class="danger-card">
       <h2>⚠️ SYSTEM OVERLOAD ⚠️</h2>
       <p>
-        CRITICAL ERROR: Cuteness and Sweetness levels exceeded theoretical physical limits (9999%).
+        WARNING: Cuteness and Sweetness levels exceeded theoretical physical limits (9999%).
         <br/><br/>
-        Sensors overloaded. Heart rate monitors compromised. 
-        High risk of permanent blushing and emotional damage!
+        Visual sensors burnt out. We scanned our global neural archives for an equivalent match...
       </p>
-      <button class="final-heart-btn" onclick="celebrateMax()">Happy Birthday, Luna! 💖</button>
+      <button class="similar-img-btn" onclick="revealSimilarImage()">Found a similar image of yours 🔍</button>
+    </div>
+  </div>
+
+  <!-- 5. MATCH RESULT MODAL -->
+  <div id="imageRevealModal">
+    <div class="match-card">
+      <h3>Visual Match: 100%</h3>
+      <p class="match-score">Exact Radiance Coordinates</p>
+      <div class="match-img-box">
+        <!-- Temporary Placeholder Image -->
+        <img src="https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?auto=format&fit=crop&w=600&q=80" alt="Luna match" id="matchedPhoto" />
+      </div>
+      <p class="match-desc">
+        Database confirms: Nothing in the universe compares, but the Moon comes closest. ✨
+      </p>
     </div>
   </div>
 
@@ -669,7 +754,6 @@ that would have been too easy.
     let clickCount = 0;
     const TARGET_CLICKS = 7;
 
-    // Slower, smooth evasive button
     let moveInterval = null;
     let posX = 0;
     let posY = 0;
@@ -686,11 +770,22 @@ that would have been too easy.
         document.getElementById('loginWrapper').style.display = 'none';
         document.getElementById('moonContainer').style.display = 'block';
         document.getElementById('disclaimerModal').style.display = 'flex';
+        playBackgroundBGM();
       } else {
         error.style.display = 'block';
         box.classList.add('shake');
         setTimeout(() => box.classList.remove('shake'), 400);
       }
+    }
+
+    function playBackgroundBGM() {
+      const container = document.getElementById('bgmAudioContainer');
+      container.innerHTML = `
+        <iframe width="1" height="1" 
+          src="https://www.youtube.com/embed/VFzgJ6P2gWc?autoplay=1&loop=1&playlist=VFzgJ6P2gWc" 
+          frameborder="0" allow="autoplay; encrypted-media">
+        </iframe>
+      `;
     }
 
     function toggleTerms(checkbox) {
@@ -772,10 +867,8 @@ that would have been too easy.
       }
     }
 
-    /* --- REAL EYE TRACKING SCANNER VIA MEDIAPIPE FACE MESH --- */
-    let accumulatedTime = 0; // Tracks the 10 seconds of active eye detection
+    let accumulatedTime = 0;
     const REQUIRED_TIME = 10000;
-    let isCalculating = false;
     let lastTimestamp = null;
     let calculationFinished = false;
 
@@ -785,21 +878,19 @@ that would have been too easy.
 
       const video = document.getElementById('cameraFeed');
 
-      // Initialize Face Mesh for exact Eye Landmark Detection
       const faceMesh = new FaceMesh({
         locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
       });
 
       faceMesh.setOptions({
         maxNumFaces: 1,
-        refineLandmarks: true, // Enables iris & eye landmark tracking
+        refineLandmarks: true,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
       });
 
       faceMesh.onResults(onFaceMeshResults);
 
-      // Camera initialization
       const camera = new Camera(video, {
         onFrame: async () => {
           await faceMesh.send({ image: video });
@@ -819,16 +910,12 @@ that would have been too easy.
       const statusDot = document.getElementById('statusDot');
       const laser = document.getElementById('laserBeam');
 
-      // Check if face landmarks and eyes are detected
       if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
         const landmarks = results.multiFaceLandmarks[0];
-
-        // Eye landmarks in MediaPipe: Left pupil ~468, Right pupil ~473, eyelids ~159, ~386
         const leftEyeOpen = landmarks[159] && landmarks[145];
         const rightEyeOpen = landmarks[386] && landmarks[374];
 
         if (leftEyeOpen && rightEyeOpen) {
-          // Both eyes are actively visible!
           statusDot.style.background = "#22c55e";
           statusDot.style.boxShadow = "0 0 12px #22c55e";
           statusText.innerText = "Eyes locked in! Scanning cuteness...";
@@ -839,7 +926,6 @@ that would have been too easy.
         }
       }
 
-      // If eyes are closed, covered, or outside the camera
       statusDot.style.background = "#f59e0b";
       statusDot.style.boxShadow = "0 0 10px #f59e0b";
       statusText.innerText = "Awaiting eyes... Look into the mirror 👀";
@@ -857,7 +943,7 @@ that would have been too easy.
       const delta = now - lastTimestamp;
       lastTimestamp = now;
 
-      if (!eyesDetected) return; // Only advance progress while eyes are visible
+      if (!eyesDetected) return;
 
       accumulatedTime += delta;
 
@@ -867,7 +953,6 @@ that would have been too easy.
       const sweetVal = document.getElementById('sweetVal');
 
       if (accumulatedTime < REQUIRED_TIME) {
-        // Fluctuating numbers between 15% and 99%
         const randCute = Math.floor(Math.random() * 85) + 15;
         const randSweet = Math.floor(Math.random() * 85) + 15;
 
@@ -877,7 +962,6 @@ that would have been too easy.
         sweetFill.style.width = randSweet + "%";
         sweetVal.innerText = randSweet + "%";
       } else {
-        // 10 total seconds of eye detection complete -> Overload!
         calculationFinished = true;
 
         cuteFill.style.width = "100%";
@@ -904,14 +988,16 @@ that would have been too easy.
       document.getElementById('dangerAlert').style.display = 'flex';
     }
 
-    function celebrateMax() {
+    function revealSimilarImage() {
       document.getElementById('dangerAlert').style.display = 'none';
+      document.getElementById('imageRevealModal').style.display = 'flex';
+
       confetti({
-        particleCount: 250,
-        spread: 120,
-        origin: { y: 0.6 }
+        particleCount: 220,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#38bdf8', '#7dd3fc', '#e0f2fe', '#ffffff']
       });
-      alert("Happy Birthday, Luna! You broke the system with maximum cuteness. 🎂✨");
     }
 
     document.addEventListener('keypress', function (e) {
