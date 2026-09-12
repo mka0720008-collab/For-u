@@ -534,10 +534,9 @@
   <div class="stars"></div>
   <div class="lunar-haze"></div>
 
-  <!-- DIRECT HTML5 AUDIO ELEMENT -->
+  <!-- DIRECT AUDIO: Uses bgm.mp3 uploaded to repo -->
   <audio id="bgmTrack" loop preload="auto">
-    <!-- Replace this URL with your uploaded bgm.mp3 if needed -->
-    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-ambient-111306.mp3" type="audio/mpeg">
+    <source src="bgm.mp3" type="audio/mpeg">
   </audio>
 
   <!-- MOON ORBIT -->
@@ -763,12 +762,8 @@ that would have been too easy.
       const box = document.getElementById('loginCard');
 
       if (user.toLowerCase() === VALID_ID.toLowerCase() && pass === VALID_PASS) {
-        // Direct interaction allows audio to play immediately on phones
-        const audio = document.getElementById('bgmTrack');
-        if (audio) {
-          audio.volume = 0.8;
-          audio.play().catch(e => console.log("Audio waiting for tap:", e));
-        }
+        // Trigger BGM immediately on click
+        playDirectAudio();
 
         document.getElementById('loginWrapper').style.display = 'none';
         document.getElementById('moonContainer').style.display = 'block';
@@ -777,6 +772,29 @@ that would have been too easy.
         error.style.display = 'block';
         box.classList.add('shake');
         setTimeout(() => box.classList.remove('shake'), 400);
+      }
+    }
+
+    // Direct, infinite loop audio handler
+    function playDirectAudio() {
+      const audio = document.getElementById('bgmTrack');
+      if (!audio) return;
+
+      audio.volume = 0.85;
+
+      // Force infinite replay loop right as the file finishes
+      audio.addEventListener('ended', function () {
+        audio.currentTime = 0;
+        audio.play();
+      }, false);
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          document.body.addEventListener('touchstart', () => {
+            audio.play();
+          }, { once: true });
+        });
       }
     }
 
@@ -859,6 +877,7 @@ that would have been too easy.
       }
     }
 
+    /* --- REAL EYE TRACKING SCANNER VIA MEDIAPIPE FACE MESH --- */
     let accumulatedTime = 0;
     const REQUIRED_TIME = 10000;
     let lastTimestamp = null;
