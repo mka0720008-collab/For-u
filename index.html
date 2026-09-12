@@ -10,7 +10,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -18,14 +18,13 @@
       background: radial-gradient(circle at 50% 10%, #0c1222 0%, #030611 100%);
       color: #f1f5f9;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
     }
 
-    /* Ambient Moon Fog & Glow */
     .lunar-haze {
       position: fixed;
       top: -20%;
@@ -38,7 +37,6 @@
       z-index: 1;
     }
 
-    /* Twinkling Starfield */
     .stars {
       position: fixed;
       inset: 0;
@@ -46,14 +44,21 @@
         radial-gradient(1.5px 1.5px at 15px 25px, #ffffff, transparent),
         radial-gradient(1px 1px at 55px 85px, #93c5fd, transparent),
         radial-gradient(2px 2px at 120px 45px, #e2e8f0, transparent),
-        radial-gradient(1.5px 1.5px at 190px 140px, #ffffff, transparent),
-        radial-gradient(1px 1px at 280px 220px, #60a5fa, transparent);
+        radial-gradient(1.5px 1.5px at 190px 140px, #ffffff, transparent);
       background-size: 320px 320px;
       opacity: 0.8;
       z-index: 1;
     }
 
-    /* --- LOGIN CARD --- */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.12);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+    }
+
+    /* --- LOGIN STAGE --- */
     #loginWrapper {
       position: fixed;
       inset: 0;
@@ -64,14 +69,6 @@
       padding: 1.2rem;
       background: rgba(3, 6, 17, 0.88);
       backdrop-filter: blur(12px);
-    }
-
-    .glass-card {
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(147, 197, 253, 0.2);
-      box-shadow: 0 0 35px rgba(56, 189, 248, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
     }
 
     .login-box {
@@ -91,7 +88,6 @@
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #e0f2fe;
-      text-shadow: 0 0 15px rgba(147, 197, 253, 0.5);
       margin-bottom: 0.3rem;
     }
 
@@ -112,12 +108,6 @@
       outline: none;
       margin-bottom: 0.75rem;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .aesthetic-input:focus {
-      border-color: #7dd3fc;
-      box-shadow: 0 0 15px rgba(125, 211, 252, 0.25);
     }
 
     .glow-btn {
@@ -128,15 +118,9 @@
       padding: 11px;
       font-size: 0.9rem;
       font-weight: 600;
-      letter-spacing: 1px;
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
-      transition: all 0.25s ease;
-    }
-
-    .glow-btn:active {
-      transform: scale(0.97);
     }
 
     .error-msg {
@@ -146,10 +130,7 @@
       display: none;
     }
 
-    .shake {
-      animation: shake 0.4s ease;
-    }
-
+    .shake { animation: shake 0.4s ease; }
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       25%, 75% { transform: translateX(-7px); }
@@ -167,40 +148,20 @@
 
     .traveling-moon {
       position: absolute;
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #475569 90%, #1e293b 100%);
       box-shadow: 0 0 45px rgba(224, 242, 254, 0.8), 0 0 120px rgba(96, 165, 250, 0.35);
       animation: celestialOrbit 22s infinite ease-in-out, moonSpin 20s infinite linear;
     }
 
-    .traveling-moon::after {
-      content: "";
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      background: rgba(71, 85, 105, 0.22);
-      border-radius: 50%;
-      top: 32px;
-      left: 28px;
-      box-shadow: 28px 18px 0 3px rgba(71, 85, 105, 0.18), 35px -8px 0 -1px rgba(71, 85, 105, 0.18);
-    }
-
     @keyframes celestialOrbit {
-      0% {
-        transform: translate(-130px, 85vh);
-        opacity: 0.2;
-      }
+      0% { transform: translate(-130px, 85vh); opacity: 0.2; }
       25% { opacity: 1; }
-      50% {
-        transform: translate(calc(50vw - 55px), 5vh);
-      }
+      50% { transform: translate(calc(50vw - 50px), 5vh); }
       75% { opacity: 1; }
-      100% {
-        transform: translate(calc(100vw + 130px), 85vh);
-        opacity: 0.2;
-      }
+      100% { transform: translate(calc(100vw + 130px), 85vh); opacity: 0.2; }
     }
 
     @keyframes moonSpin {
@@ -208,7 +169,7 @@
       100% { filter: drop-shadow(0 0 25px rgba(125, 211, 252, 0.6)) rotate(360deg); }
     }
 
-    /* --- DISCLAIMER POPUP MODAL --- */
+    /* --- DISCLAIMER MODAL --- */
     #disclaimerModal {
       display: none;
       position: fixed;
@@ -227,7 +188,6 @@
       max-height: 82vh;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
 
     .disclaimer-header {
@@ -240,7 +200,6 @@
       font-size: 1.1rem;
       color: #7dd3fc;
       letter-spacing: 1.5px;
-      font-weight: 600;
     }
 
     .disclaimer-body {
@@ -253,15 +212,12 @@
       text-align: left;
     }
 
-    .disclaimer-body::-webkit-scrollbar {
-      width: 5px;
-    }
+    .disclaimer-body::-webkit-scrollbar { width: 5px; }
     .disclaimer-body::-webkit-scrollbar-thumb {
       background: rgba(147, 197, 253, 0.2);
       border-radius: 8px;
     }
 
-    /* Footer: Checkbox & Continuous Moving Next Button */
     .disclaimer-footer {
       padding: 1.1rem 1.4rem;
       border-top: 1px solid rgba(147, 197, 253, 0.12);
@@ -269,7 +225,6 @@
       flex-direction: column;
       gap: 1rem;
       align-items: center;
-      position: relative;
       min-height: 110px;
     }
 
@@ -280,17 +235,15 @@
       font-size: 0.85rem;
       color: #cbd5e1;
       cursor: pointer;
-      user-select: none;
     }
 
     .checkbox-container input {
       width: 18px;
       height: 18px;
       accent-color: #38bdf8;
-      cursor: pointer;
     }
 
-    /* Moving Next Button */
+    /* Continuous Moving Next Button (Gentle Speed) */
     #evasiveBtn {
       background: linear-gradient(135deg, #0284c7, #38bdf8);
       color: #040817;
@@ -302,8 +255,6 @@
       cursor: pointer;
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
       position: relative;
-      user-select: none;
-      transition: transform 0.1s ease;
       z-index: 100;
     }
 
@@ -315,33 +266,198 @@
       cursor: not-allowed;
     }
 
-    /* --- FINAL WELCOME SCREEN --- */
-    #finalWelcome {
+    /* --- OVAL MIRROR SCANNER PAGE --- */
+    #scannerStage {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 8;
+      z-index: 25;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.5rem 1rem 2rem;
+      overflow-y: auto;
+      background: radial-gradient(circle at 50% 20%, #0c1833 0%, #020612 100%);
+    }
+
+    .mirror-wrapper {
+      position: relative;
+      width: 220px;
+      height: 300px;
+      border-radius: 50% / 40%;
+      padding: 7px;
+      background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0369a1 100%);
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.4);
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+
+    .mirror-frame {
+      width: 100%;
+      height: 100%;
+      border-radius: 50% / 40%;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    video#cameraFeed {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* mirror view */
+    }
+
+    /* Scanning beam */
+    .scan-line {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #38bdf8;
+      box-shadow: 0 0 15px #38bdf8, 0 0 30px #38bdf8;
+      animation: scanLaser 2s infinite ease-in-out;
+      z-index: 10;
+    }
+
+    @keyframes scanLaser {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 96%; opacity: 1; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+
+    /* Eye Detection Status */
+    .status-badge {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      letter-spacing: 1px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f59e0b;
+      box-shadow: 0 0 10px #f59e0b;
+    }
+
+    /* Meters */
+    .meters-container {
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .meter-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(147, 197, 253, 0.15);
+      border-radius: 14px;
+      padding: 10px 14px;
+    }
+
+    .meter-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      color: #e0f2fe;
+    }
+
+    .meter-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(2, 6, 23, 0.8);
+      border-radius: 50px;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 50px;
+      transition: width 0.15s ease-out;
+    }
+
+    #cutenessFill {
+      background: linear-gradient(90deg, #38bdf8, #f472b6);
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.5);
+    }
+
+    #sweetnessFill {
+      background: linear-gradient(90deg, #38bdf8, #fbbf24);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+    }
+
+    /* --- EXPLOSION / OVERLOAD OVERLAY --- */
+    #dangerAlert {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(15px);
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 1.5rem;
       text-align: center;
-      padding: 2rem;
     }
 
-    #finalWelcome h1 {
-      font-size: 2.3rem;
-      font-weight: 300;
-      letter-spacing: 3px;
-      color: #f8fafc;
+    .danger-card {
+      background: rgba(239, 68, 68, 0.12);
+      border: 2px solid #ef4444;
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.4), inset 0 0 30px rgba(239, 68, 68, 0.2);
+      border-radius: 24px;
+      max-width: 420px;
+      padding: 2rem 1.5rem;
+      animation: alertGlitch 0.25s infinite alternate;
+    }
+
+    @keyframes alertGlitch {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.02); }
+    }
+
+    .danger-card h2 {
+      font-size: 1.4rem;
+      color: #ef4444;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       margin-bottom: 0.8rem;
-      text-shadow: 0 0 35px rgba(125, 211, 252, 0.7);
     }
 
-    #finalWelcome p {
-      max-width: 480px;
-      color: #94a3b8;
-      line-height: 1.7;
+    .danger-card p {
+      color: #fca5a5;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .final-heart-btn {
+      background: linear-gradient(135deg, #ef4444, #f43f5e);
+      color: white;
+      border: none;
+      padding: 12px 28px;
       font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
     }
   </style>
 </head>
@@ -480,8 +596,7 @@ that would have been too easy.
 🌙 ENTER AT YOUR OWN RISK
       </div>
 
-      <!-- FOOTER: Checkbox & Continuous Moving Next Button -->
-      <div class="disclaimer-footer" id="footerZone">
+      <div class="disclaimer-footer">
         <label class="checkbox-container">
           <input type="checkbox" id="termsCheck" onchange="toggleTerms(this)" />
           <span>I accept all terms & conditions unconditionally 🤞</span>
@@ -491,10 +606,56 @@ that would have been too easy.
     </div>
   </div>
 
-  <!-- 3. FINAL DESTINATION SCREEN -->
-  <div id="finalWelcome">
-    <h1>Happy Birthday, Luna ✨</h1>
-    <p>You survived the terms, caught the button 7 times, and made it to the other side.<br/>Wishing you the brightest year under every night sky.</p>
+  <!-- 3. CAMERA OVAL MIRROR & CALCULATOR PAGE -->
+  <div id="scannerStage">
+    <div class="mirror-wrapper">
+      <div class="mirror-frame">
+        <video id="cameraFeed" autoplay playsinline muted></video>
+        <div class="scan-line" id="laserBeam"></div>
+      </div>
+    </div>
+
+    <div class="status-badge" id="eyeStatus">
+      <div class="pulse-dot" id="statusDot"></div>
+      <span id="statusText">Awaiting eye & face detection...</span>
+    </div>
+
+    <!-- Cuteness & Sweetness Meters -->
+    <div class="meters-container">
+      <div class="meter-box">
+        <div class="meter-label">
+          <span>✨ CUTENESS INDEX</span>
+          <span id="cuteVal">0%</span>
+        </div>
+        <div class="meter-track">
+          <div class="meter-fill" id="cutenessFill"></div>
+        </div>
+      </div>
+
+      <div class="meter-box">
+        <div class="meter-label">
+          <span>🍯 SWEETNESS LEVELS</span>
+          <span id="sweetVal">0%</span>
+        </div>
+        <div class="meter-track">
+          <div class="meter-fill" id="sweetnessFill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. EXPLOSION / OVERLOAD MODAL -->
+  <div id="dangerAlert">
+    <div class="danger-card">
+      <h2>⚠️ SYSTEM OVERLOAD ⚠️</h2>
+      <p>
+        CRITICAL ERROR: Cuteness and Sweetness levels exceeded theoretical physical limits (9999%).
+        <br/><br/>
+        Hardware sensors have melted. Heart rate monitors compromised. 
+        High risk of permanent blushing and emotional damage!
+      </p>
+      <button class="final-heart-btn" onclick="celebrateMax()">Happy Birthday, Luna! 💖</button>
+    </div>
   </div>
 
   <script>
@@ -503,12 +664,12 @@ that would have been too easy.
     let clickCount = 0;
     const TARGET_CLICKS = 7;
 
-    // Continuous Floating Button Variables
+    // Slower, smoother button speed
     let moveInterval = null;
     let posX = 0;
     let posY = 0;
-    let velX = 3.5;
-    let velY = 2.8;
+    let velX = 1.6; 
+    let velY = 1.3;
 
     function checkCredentials() {
       const user = document.getElementById('idInput').value.trim();
@@ -538,7 +699,6 @@ that would have been too easy.
         btn.disabled = true;
         btn.innerText = `Next (${clickCount}/${TARGET_CLICKS})`;
         btn.style.position = 'relative';
-        btn.style.transform = 'none';
         btn.style.left = 'auto';
         btn.style.top = 'auto';
       }
@@ -547,7 +707,6 @@ that would have been too easy.
     function startContinuousMotion() {
       const btn = document.getElementById('evasiveBtn');
       btn.style.position = 'fixed';
-
       const rect = btn.getBoundingClientRect();
       posX = rect.left;
       posY = rect.top;
@@ -578,7 +737,6 @@ that would have been too easy.
       posX += velX;
       posY += velY;
 
-      // Bounce off screen walls
       if (posX <= minX || posX >= maxX) {
         velX = -velX;
         posX = Math.max(minX, Math.min(posX, maxX));
@@ -602,24 +760,133 @@ that would have been too easy.
       const btn = document.getElementById('evasiveBtn');
       btn.innerText = `Catch Me! (${clickCount}/${TARGET_CLICKS})`;
 
-      // Slight speed up and velocity shift on tap
-      velX = (velX > 0 ? 1 : -1) * (Math.abs(velX) + 0.4);
-      velY = (velY > 0 ? 1 : -1) * (Math.abs(velY) + 0.4);
-
       if (clickCount >= TARGET_CLICKS) {
         stopContinuousMotion();
         document.getElementById('disclaimerModal').style.display = 'none';
-        document.getElementById('finalWelcome').style.display = 'flex';
-
-        confetti({
-          particleCount: 160,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#7dd3fc', '#38bdf8', '#e0f2fe', '#ffffff']
-        });
+        initiateMirrorStage();
       }
     }
 
+    /* --- CAMERA & EYE SCANNER LOGIC --- */
+    async function initiateMirrorStage() {
+      const stage = document.getElementById('scannerStage');
+      stage.style.display = 'flex';
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" }
+        });
+        const video = document.getElementById('cameraFeed');
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+          detectEyesAndStartScan(video);
+        };
+      } catch (err) {
+        // Fallback if camera is denied
+        document.getElementById('statusText').innerText = "Sensor Active: Analyzing radiance...";
+        start10SecCalculation();
+      }
+    }
+
+    // Eye detection with native FaceDetector or graceful fallback
+    async function detectEyesAndStartScan(video) {
+      const statusText = document.getElementById('statusText');
+      const statusDot = document.getElementById('statusDot');
+
+      if ('FaceDetector' in window) {
+        try {
+          const detector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
+          const checkLoop = setInterval(async () => {
+            const faces = await detector.detect(video);
+            if (faces.length > 0) {
+              clearInterval(checkLoop);
+              statusDot.style.background = "#22c55e";
+              statusDot.style.boxShadow = "0 0 10px #22c55e";
+              statusText.innerText = "Eyes & smile locked in! Calculating...";
+              start10SecCalculation();
+            }
+          }, 500);
+          return;
+        } catch (e) {
+          // Proceed to fallback
+        }
+      }
+
+      // Automatic scan start after camera turns on
+      setTimeout(() => {
+        statusDot.style.background = "#22c55e";
+        statusDot.style.boxShadow = "0 0 10px #22c55e";
+        statusText.innerText = "Eyes & smile detected! Analyzing...";
+        start10SecCalculation();
+      }, 2000);
+    }
+
+    /* --- 10 SECONDS FLUCTUATING CALCULATOR --- */
+    function start10SecCalculation() {
+      document.getElementById('laserBeam').style.display = 'block';
+
+      const cuteFill = document.getElementById('cutenessFill');
+      const sweetFill = document.getElementById('sweetnessFill');
+      const cuteVal = document.getElementById('cuteVal');
+      const sweetVal = document.getElementById('sweetVal');
+
+      const startTime = Date.now();
+      const duration = 10000; // 10 seconds
+
+      const calcInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+
+        if (elapsed < duration) {
+          // Fluctuates unpredictably between 20% and 99%
+          const randCute = Math.floor(Math.random() * 85) + 15;
+          const randSweet = Math.floor(Math.random() * 85) + 15;
+
+          cuteFill.style.width = randCute + "%";
+          cuteVal.innerText = randCute + "%";
+
+          sweetFill.style.width = randSweet + "%";
+          sweetVal.innerText = randSweet + "%";
+        } else {
+          // Blast to 100% and explode
+          clearInterval(calcInterval);
+          cuteFill.style.width = "100%";
+          cuteVal.innerText = "100% ⚠️";
+          sweetFill.style.width = "100%";
+          sweetVal.innerText = "100% ⚠️";
+
+          document.getElementById('laserBeam').style.display = 'none';
+
+          // Trigger Overload Explosion
+          setTimeout(() => {
+            triggerExplosion();
+          }, 600);
+        }
+      }, 100);
+    }
+
+    function triggerExplosion() {
+      // Confetti burst
+      confetti({
+        particleCount: 180,
+        spread: 90,
+        origin: { y: 0.5 },
+        colors: ['#ef4444', '#f43f5e', '#fbbf24', '#ffffff']
+      });
+
+      document.getElementById('dangerAlert').style.display = 'flex';
+    }
+
+    function celebrateMax() {
+      document.getElementById('dangerAlert').style.display = 'none';
+      confetti({
+        particleCount: 250,
+        spread: 120,
+        origin: { y: 0.6 }
+      });
+      alert("Happy Birthday, Luna! You broke the system with maximum cuteness. 🎂✨");
+    }
+
+    // Keyboard support for Enter
     document.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         const loginWrapper = document.getElementById('loginWrapper');
