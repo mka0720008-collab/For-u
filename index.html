@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Birthday Portal 🌙</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Moonlit Odyssey 🌙</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: #030712;
-      color: #f8fafc;
+      background: radial-gradient(circle at 50% 10%, #0c1222 0%, #030611 100%);
+      color: #f1f5f9;
       min-height: 100vh;
       overflow: hidden;
       display: flex;
@@ -24,42 +25,58 @@
       position: relative;
     }
 
-    /* Starfield background */
+    /* Ambient Moon Fog & Glow */
+    .lunar-haze {
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 179, 237, 0.15) 0%, rgba(3, 6, 17, 0) 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Twinkling Starfield */
     .stars {
       position: fixed;
       inset: 0;
       background-image: 
-        radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 40px 70px, #38bdf8, rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 160px 120px, #e0f2fe, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 250px 180px, #ffffff, rgba(0,0,0,0));
-      background-repeat: repeat;
-      background-size: 300px 300px;
-      opacity: 0.7;
+        radial-gradient(1.5px 1.5px at 15px 25px, #ffffff, transparent),
+        radial-gradient(1px 1px at 55px 85px, #93c5fd, transparent),
+        radial-gradient(2px 2px at 120px 45px, #e2e8f0, transparent),
+        radial-gradient(1.5px 1.5px at 190px 140px, #ffffff, transparent),
+        radial-gradient(1px 1px at 280px 220px, #60a5fa, transparent);
+      background-size: 320px 320px;
+      opacity: 0.8;
       z-index: 1;
     }
 
-    /* --- LOGIN STAGE --- */
+    /* --- LOGIN CARD --- */
     #loginWrapper {
       position: fixed;
       inset: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 50;
-      padding: 1rem;
-      background: radial-gradient(circle at center, #0b132b 0%, #030712 100%);
+      z-index: 60;
+      padding: 1.2rem;
+      background: rgba(3, 6, 17, 0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
     }
 
     .login-box {
-      width: 350px;
-      height: 350px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
-      backdrop-filter: blur(14px);
+      width: 340px;
+      height: 340px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -69,54 +86,62 @@
     }
 
     .login-box h2 {
-      font-size: 1.35rem;
-      color: #38bdf8;
-      letter-spacing: 2px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      color: #e0f2fe;
+      text-shadow: 0 0 15px rgba(147, 197, 253, 0.5);
       margin-bottom: 0.3rem;
     }
 
     .login-box p {
       color: #94a3b8;
-      font-size: 0.8rem;
-      margin-bottom: 1.2rem;
+      font-size: 0.82rem;
+      margin-bottom: 1.3rem;
     }
 
-    .dark-input {
+    .aesthetic-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 15px;
       font-size: 0.95rem;
-      background: rgba(2, 6, 23, 0.85);
-      border: 1px solid #1e293b;
-      border-radius: 10px;
+      background: rgba(8, 14, 26, 0.8);
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      border-radius: 12px;
       color: #f8fafc;
       outline: none;
       margin-bottom: 0.75rem;
       text-align: center;
-      transition: border-color 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .dark-input:focus {
-      border-color: #38bdf8;
+    .aesthetic-input:focus {
+      border-color: #7dd3fc;
+      box-shadow: 0 0 15px rgba(125, 211, 252, 0.25);
     }
 
     .glow-btn {
       width: 100%;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: white;
-      border: 1px solid #38bdf8;
-      padding: 10px;
-      font-size: 0.95rem;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0369a1 100%);
+      color: #f0f9ff;
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      padding: 11px;
+      font-size: 0.9rem;
       font-weight: 600;
+      letter-spacing: 1px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-      transition: all 0.2s ease;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .glow-btn:active {
+      transform: scale(0.97);
     }
 
     .error-msg {
       color: #f87171;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       margin-top: 0.5rem;
       display: none;
     }
@@ -127,11 +152,11 @@
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      25%, 75% { transform: translateX(-8px); }
-      50% { transform: translateX(8px); }
+      25%, 75% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
     }
 
-    /* --- ROTATING & ORBITING MOON --- */
+    /* --- ROTATING LUNAR ORBIT --- */
     .moon-orbit-container {
       position: fixed;
       inset: 0;
@@ -142,50 +167,45 @@
 
     .traveling-moon {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 55%, #64748b 100%);
-      box-shadow: 0 0 45px rgba(224, 242, 254, 0.85), 0 0 100px rgba(56, 189, 248, 0.45);
-      animation: orbitSky 24s infinite ease-in-out, moonSelfRotate 16s infinite linear;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #475569 90%, #1e293b 100%);
+      box-shadow: 0 0 45px rgba(224, 242, 254, 0.8), 0 0 120px rgba(96, 165, 250, 0.35);
+      animation: celestialOrbit 22s infinite ease-in-out, moonSpin 20s infinite linear;
     }
 
-    /* Crater illusion details */
     .traveling-moon::after {
       content: "";
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background: rgba(100, 116, 139, 0.25);
+      width: 22px;
+      height: 22px;
+      background: rgba(71, 85, 105, 0.22);
       border-radius: 50%;
-      top: 30px;
-      left: 25px;
-      box-shadow: 25px 20px 0 2px rgba(100, 116, 139, 0.2), 35px -5px 0 -2px rgba(100, 116, 139, 0.2);
+      top: 32px;
+      left: 28px;
+      box-shadow: 28px 18px 0 3px rgba(71, 85, 105, 0.18), 35px -8px 0 -1px rgba(71, 85, 105, 0.18);
     }
 
-    @keyframes orbitSky {
+    @keyframes celestialOrbit {
       0% {
-        transform: translate(-120px, 85vh);
-        opacity: 0.3;
+        transform: translate(-130px, 85vh);
+        opacity: 0.2;
       }
-      20% {
-        opacity: 1;
-      }
+      25% { opacity: 1; }
       50% {
-        transform: translate(calc(50vw - 50px), 6vh);
+        transform: translate(calc(50vw - 55px), 5vh);
       }
-      80% {
-        opacity: 1;
-      }
+      75% { opacity: 1; }
       100% {
-        transform: translate(calc(100vw + 120px), 85vh);
-        opacity: 0.3;
+        transform: translate(calc(100vw + 130px), 85vh);
+        opacity: 0.2;
       }
     }
 
-    @keyframes moonSelfRotate {
-      0% { filter: drop-shadow(0 0 25px #38bdf8) rotate(0deg); }
-      100% { filter: drop-shadow(0 0 25px #38bdf8) rotate(360deg); }
+    @keyframes moonSpin {
+      0% { filter: drop-shadow(0 0 25px rgba(125, 211, 252, 0.6)) rotate(0deg); }
+      100% { filter: drop-shadow(0 0 25px rgba(125, 211, 252, 0.6)) rotate(360deg); }
     }
 
     /* --- DISCLAIMER POPUP MODAL --- */
@@ -193,8 +213,8 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(3, 7, 18, 0.7);
-      backdrop-filter: blur(10px);
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: blur(14px);
       z-index: 10;
       justify-content: center;
       align-items: center;
@@ -202,52 +222,49 @@
     }
 
     .disclaimer-card {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 20px;
-      max-width: 580px;
+      max-width: 560px;
       width: 100%;
       max-height: 82vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 0 50px rgba(56, 189, 248, 0.25);
       position: relative;
     }
 
     .disclaimer-header {
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      padding: 1.2rem;
+      border-bottom: 1px solid rgba(147, 197, 253, 0.12);
       text-align: center;
     }
 
     .disclaimer-header h3 {
-      font-size: 1.2rem;
-      color: #38bdf8;
-      letter-spacing: 1px;
+      font-size: 1.1rem;
+      color: #7dd3fc;
+      letter-spacing: 1.5px;
+      font-weight: 600;
     }
 
     .disclaimer-body {
       padding: 1.5rem;
       overflow-y: auto;
       color: #cbd5e1;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.7;
       white-space: pre-line;
       text-align: left;
     }
 
     .disclaimer-body::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
     .disclaimer-body::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 10px;
+      background: rgba(147, 197, 253, 0.2);
+      border-radius: 8px;
     }
 
-    /* Footer: Checkbox & Moving Next Button */
+    /* Footer: Checkbox & Continuous Moving Next Button */
     .disclaimer-footer {
-      padding: 1rem 1.5rem 1.4rem;
-      border-top: 1px solid rgba(56, 189, 248, 0.15);
+      padding: 1.1rem 1.4rem;
+      border-top: 1px solid rgba(147, 197, 253, 0.12);
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -260,8 +277,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.88rem;
-      color: #f1f5f9;
+      font-size: 0.85rem;
+      color: #cbd5e1;
       cursor: pointer;
       user-select: none;
     }
@@ -273,24 +290,27 @@
       cursor: pointer;
     }
 
+    /* Moving Next Button */
     #evasiveBtn {
       background: linear-gradient(135deg, #0284c7, #38bdf8);
-      color: #030712;
+      color: #040817;
       font-weight: 700;
-      border: none;
-      padding: 10px 24px;
+      border: 1px solid #7dd3fc;
+      padding: 10px 22px;
       border-radius: 50px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
-      transition: top 0.25s ease-out, left 0.25s ease-out, transform 0.15s ease;
       position: relative;
       user-select: none;
+      transition: transform 0.1s ease;
+      z-index: 100;
     }
 
     #evasiveBtn:disabled {
-      background: #334155;
-      color: #94a3b8;
+      background: #1e293b;
+      color: #64748b;
+      border-color: rgba(255, 255, 255, 0.05);
       box-shadow: none;
       cursor: not-allowed;
     }
@@ -309,35 +329,39 @@
     }
 
     #finalWelcome h1 {
-      font-size: 2.2rem;
-      color: #ffffff;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+      font-size: 2.3rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: #f8fafc;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 0 35px rgba(125, 211, 252, 0.7);
     }
 
     #finalWelcome p {
-      max-width: 500px;
+      max-width: 480px;
       color: #94a3b8;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
 
   <div class="stars"></div>
+  <div class="lunar-haze"></div>
 
-  <!-- MOON ORBIT BACKGROUND -->
+  <!-- MOON ORBIT -->
   <div class="moon-orbit-container" id="moonContainer">
     <div class="traveling-moon"></div>
   </div>
 
-  <!-- 1. SQUARE LOGIN CARD -->
+  <!-- 1. LOGIN STAGE -->
   <div id="loginWrapper">
-    <div class="login-box" id="loginCard">
-      <h2>Restricted Access</h2>
-      <p>Authenticate to initiate orbit</p>
-      <input type="text" id="idInput" class="dark-input" placeholder="Login ID" autocomplete="off" />
-      <input type="password" id="passInput" class="dark-input" placeholder="Password" />
+    <div class="glass-card login-box" id="loginCard">
+      <h2>Lunar Portal</h2>
+      <p>Authenticate to illuminate the orbit</p>
+      <input type="text" id="idInput" class="aesthetic-input" placeholder="Login ID" autocomplete="off" />
+      <input type="password" id="passInput" class="aesthetic-input" placeholder="Password" />
       <button class="glow-btn" onclick="checkCredentials()">Enter 🪐</button>
       <div class="error-msg" id="errorMsg">Incorrect credentials. Try again.</div>
     </div>
@@ -345,7 +369,7 @@
 
   <!-- 2. DISCLAIMER MODAL -->
   <div id="disclaimerModal">
-    <div class="disclaimer-card">
+    <div class="glass-card disclaimer-card">
       <div class="disclaimer-header">
         <h3>⚠️ OFFICIAL DISCLAIMER ⚠️</h3>
       </div>
@@ -456,11 +480,11 @@ that would have been too easy.
 🌙 ENTER AT YOUR OWN RISK
       </div>
 
-      <!-- FOOTER: Checkbox & Evasive Button -->
+      <!-- FOOTER: Checkbox & Continuous Moving Next Button -->
       <div class="disclaimer-footer" id="footerZone">
         <label class="checkbox-container">
           <input type="checkbox" id="termsCheck" onchange="toggleTerms(this)" />
-          <span>I accept all the terms & conditions unconditionally 🤞</span>
+          <span>I accept all terms & conditions unconditionally 🤞</span>
         </label>
         <button id="evasiveBtn" disabled onclick="handleNextClick()">Next (0/7)</button>
       </div>
@@ -469,8 +493,8 @@ that would have been too easy.
 
   <!-- 3. FINAL DESTINATION SCREEN -->
   <div id="finalWelcome">
-    <h1>Welcome, Luna ✨</h1>
-    <p>You survived the disclaimer and caught the button 7 times.<br/>The adventure begins now!</p>
+    <h1>Happy Birthday, Luna ✨</h1>
+    <p>You survived the terms, caught the button 7 times, and made it to the other side.<br/>Wishing you the brightest year under every night sky.</p>
   </div>
 
   <script>
@@ -479,7 +503,13 @@ that would have been too easy.
     let clickCount = 0;
     const TARGET_CLICKS = 7;
 
-    // Login Verification
+    // Continuous Floating Button Variables
+    let moveInterval = null;
+    let posX = 0;
+    let posY = 0;
+    let velX = 3.5;
+    let velY = 2.8;
+
     function checkCredentials() {
       const user = document.getElementById('idInput').value.trim();
       const pass = document.getElementById('passInput').value.trim();
@@ -497,47 +527,73 @@ that would have been too easy.
       }
     }
 
-    // Enable/Disable Moving Button
     function toggleTerms(checkbox) {
       const btn = document.getElementById('evasiveBtn');
       if (checkbox.checked) {
         btn.disabled = false;
         btn.innerText = `Catch Me! (${clickCount}/${TARGET_CLICKS})`;
-        btn.addEventListener('mouseenter', dodgeButton);
+        startContinuousMotion();
       } else {
+        stopContinuousMotion();
         btn.disabled = true;
         btn.innerText = `Next (${clickCount}/${TARGET_CLICKS})`;
         btn.style.position = 'relative';
-        btn.style.top = '0';
-        btn.style.left = '0';
-        btn.removeEventListener('mouseenter', dodgeButton);
+        btn.style.transform = 'none';
+        btn.style.left = 'auto';
+        btn.style.top = 'auto';
       }
     }
 
-    // Move button across the viewport safely
-    function dodgeButton() {
-      const termsCheck = document.getElementById('termsCheck');
-      if (!termsCheck.checked) return;
-
+    function startContinuousMotion() {
       const btn = document.getElementById('evasiveBtn');
       btn.style.position = 'fixed';
 
-      // Keep within screen boundaries
-      const pad = 30;
-      const btnWidth = btn.offsetWidth || 130;
-      const btnHeight = btn.offsetHeight || 45;
+      const rect = btn.getBoundingClientRect();
+      posX = rect.left;
+      posY = rect.top;
 
-      const maxX = window.innerWidth - btnWidth - pad;
-      const maxY = window.innerHeight - btnHeight - pad;
-
-      const randX = Math.max(pad, Math.floor(Math.random() * maxX));
-      const randY = Math.max(pad, Math.floor(Math.random() * maxY));
-
-      btn.style.left = `${randX}px`;
-      btn.style.top = `${randY}px`;
+      if (!moveInterval) {
+        moveInterval = requestAnimationFrame(updateButtonPosition);
+      }
     }
 
-    // 7 Clicks Mechanism
+    function stopContinuousMotion() {
+      if (moveInterval) {
+        cancelAnimationFrame(moveInterval);
+        moveInterval = null;
+      }
+    }
+
+    function updateButtonPosition() {
+      const btn = document.getElementById('evasiveBtn');
+      const pad = 20;
+      const btnW = btn.offsetWidth || 130;
+      const btnH = btn.offsetHeight || 45;
+
+      const minX = pad;
+      const maxX = window.innerWidth - btnW - pad;
+      const minY = pad;
+      const maxY = window.innerHeight - btnH - pad;
+
+      posX += velX;
+      posY += velY;
+
+      // Bounce off screen walls
+      if (posX <= minX || posX >= maxX) {
+        velX = -velX;
+        posX = Math.max(minX, Math.min(posX, maxX));
+      }
+      if (posY <= minY || posY >= maxY) {
+        velY = -velY;
+        posY = Math.max(minY, Math.min(posY, maxY));
+      }
+
+      btn.style.left = `${posX}px`;
+      btn.style.top = `${posY}px`;
+
+      moveInterval = requestAnimationFrame(updateButtonPosition);
+    }
+
     function handleNextClick() {
       const termsCheck = document.getElementById('termsCheck');
       if (!termsCheck.checked) return;
@@ -546,26 +602,24 @@ that would have been too easy.
       const btn = document.getElementById('evasiveBtn');
       btn.innerText = `Catch Me! (${clickCount}/${TARGET_CLICKS})`;
 
-      // Teleport away immediately after being tapped
-      dodgeButton();
+      // Slight speed up and velocity shift on tap
+      velX = (velX > 0 ? 1 : -1) * (Math.abs(velX) + 0.4);
+      velY = (velY > 0 ? 1 : -1) * (Math.abs(velY) + 0.4);
 
       if (clickCount >= TARGET_CLICKS) {
-        // Unlock next stage
+        stopContinuousMotion();
         document.getElementById('disclaimerModal').style.display = 'none';
-        const welcome = document.getElementById('finalWelcome');
-        welcome.style.display = 'flex';
+        document.getElementById('finalWelcome').style.display = 'flex';
 
-        // Celebration Confetti
         confetti({
-          particleCount: 150,
+          particleCount: 160,
           spread: 80,
           origin: { y: 0.6 },
-          colors: ['#38bdf8', '#0284c7', '#e0f2fe', '#ffffff']
+          colors: ['#7dd3fc', '#38bdf8', '#e0f2fe', '#ffffff']
         });
       }
     }
 
-    // Enter Key Login Support
     document.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         const loginWrapper = document.getElementById('loginWrapper');
