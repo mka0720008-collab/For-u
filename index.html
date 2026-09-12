@@ -4,7 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Moonlit Odyssey 🌙</title>
+  
+  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- MediaPipe Face Mesh & Camera Tools for True Eye Detection -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -58,7 +65,7 @@
       border-radius: 24px;
     }
 
-    /* --- LOGIN STAGE --- */
+    /* --- 1. LOGIN STAGE --- */
     #loginWrapper {
       position: fixed;
       inset: 0;
@@ -243,7 +250,6 @@
       accent-color: #38bdf8;
     }
 
-    /* Continuous Moving Next Button (Gentle Speed) */
     #evasiveBtn {
       background: linear-gradient(135deg, #0284c7, #38bdf8);
       color: #040817;
@@ -266,7 +272,7 @@
       cursor: not-allowed;
     }
 
-    /* --- OVAL MIRROR SCANNER PAGE --- */
+    /* --- CAMERA OVAL MIRROR & CALCULATOR PAGE --- */
     #scannerStage {
       display: none;
       position: fixed;
@@ -305,10 +311,9 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scaleX(-1); /* mirror view */
+      transform: scaleX(-1);
     }
 
-    /* Scanning beam */
     .scan-line {
       display: none;
       position: absolute;
@@ -610,14 +615,14 @@ that would have been too easy.
   <div id="scannerStage">
     <div class="mirror-wrapper">
       <div class="mirror-frame">
-        <video id="cameraFeed" autoplay playsinline muted></video>
+        <video id="cameraFeed" playsinline muted></video>
         <div class="scan-line" id="laserBeam"></div>
       </div>
     </div>
 
     <div class="status-badge" id="eyeStatus">
       <div class="pulse-dot" id="statusDot"></div>
-      <span id="statusText">Awaiting eye & face detection...</span>
+      <span id="statusText">Looking for your eyes... Look at the screen 👀</span>
     </div>
 
     <!-- Cuteness & Sweetness Meters -->
@@ -651,7 +656,7 @@ that would have been too easy.
       <p>
         CRITICAL ERROR: Cuteness and Sweetness levels exceeded theoretical physical limits (9999%).
         <br/><br/>
-        Hardware sensors have melted. Heart rate monitors compromised. 
+        Sensors overloaded. Heart rate monitors compromised. 
         High risk of permanent blushing and emotional damage!
       </p>
       <button class="final-heart-btn" onclick="celebrateMax()">Happy Birthday, Luna! 💖</button>
@@ -664,7 +669,7 @@ that would have been too easy.
     let clickCount = 0;
     const TARGET_CLICKS = 7;
 
-    // Slower, smoother button speed
+    // Slower, smooth evasive button
     let moveInterval = null;
     let posX = 0;
     let posY = 0;
@@ -767,105 +772,128 @@ that would have been too easy.
       }
     }
 
-    /* --- CAMERA & EYE SCANNER LOGIC --- */
+    /* --- REAL EYE TRACKING SCANNER VIA MEDIAPIPE FACE MESH --- */
+    let accumulatedTime = 0; // Tracks the 10 seconds of active eye detection
+    const REQUIRED_TIME = 10000;
+    let isCalculating = false;
+    let lastTimestamp = null;
+    let calculationFinished = false;
+
     async function initiateMirrorStage() {
       const stage = document.getElementById('scannerStage');
       stage.style.display = 'flex';
 
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" }
-        });
-        const video = document.getElementById('cameraFeed');
-        video.srcObject = stream;
-        video.onloadedmetadata = () => {
-          detectEyesAndStartScan(video);
-        };
-      } catch (err) {
-        // Fallback if camera is denied
-        document.getElementById('statusText').innerText = "Sensor Active: Analyzing radiance...";
-        start10SecCalculation();
-      }
+      const video = document.getElementById('cameraFeed');
+
+      // Initialize Face Mesh for exact Eye Landmark Detection
+      const faceMesh = new FaceMesh({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+      });
+
+      faceMesh.setOptions({
+        maxNumFaces: 1,
+        refineLandmarks: true, // Enables iris & eye landmark tracking
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+      });
+
+      faceMesh.onResults(onFaceMeshResults);
+
+      // Camera initialization
+      const camera = new Camera(video, {
+        onFrame: async () => {
+          await faceMesh.send({ image: video });
+        },
+        facingMode: 'user',
+        width: 480,
+        height: 640
+      });
+
+      camera.start();
     }
 
-    // Eye detection with native FaceDetector or graceful fallback
-    async function detectEyesAndStartScan(video) {
+    function onFaceMeshResults(results) {
+      if (calculationFinished) return;
+
       const statusText = document.getElementById('statusText');
       const statusDot = document.getElementById('statusDot');
+      const laser = document.getElementById('laserBeam');
 
-      if ('FaceDetector' in window) {
-        try {
-          const detector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
-          const checkLoop = setInterval(async () => {
-            const faces = await detector.detect(video);
-            if (faces.length > 0) {
-              clearInterval(checkLoop);
-              statusDot.style.background = "#22c55e";
-              statusDot.style.boxShadow = "0 0 10px #22c55e";
-              statusText.innerText = "Eyes & smile locked in! Calculating...";
-              start10SecCalculation();
-            }
-          }, 500);
+      // Check if face landmarks and eyes are detected
+      if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+        const landmarks = results.multiFaceLandmarks[0];
+
+        // Eye landmarks in MediaPipe: Left pupil ~468, Right pupil ~473, eyelids ~159, ~386
+        const leftEyeOpen = landmarks[159] && landmarks[145];
+        const rightEyeOpen = landmarks[386] && landmarks[374];
+
+        if (leftEyeOpen && rightEyeOpen) {
+          // Both eyes are actively visible!
+          statusDot.style.background = "#22c55e";
+          statusDot.style.boxShadow = "0 0 12px #22c55e";
+          statusText.innerText = "Eyes locked in! Scanning cuteness...";
+          laser.style.display = 'block';
+
+          processScanTick(true);
           return;
-        } catch (e) {
-          // Proceed to fallback
         }
       }
 
-      // Automatic scan start after camera turns on
-      setTimeout(() => {
-        statusDot.style.background = "#22c55e";
-        statusDot.style.boxShadow = "0 0 10px #22c55e";
-        statusText.innerText = "Eyes & smile detected! Analyzing...";
-        start10SecCalculation();
-      }, 2000);
+      // If eyes are closed, covered, or outside the camera
+      statusDot.style.background = "#f59e0b";
+      statusDot.style.boxShadow = "0 0 10px #f59e0b";
+      statusText.innerText = "Awaiting eyes... Look into the mirror 👀";
+      laser.style.display = 'none';
+
+      processScanTick(false);
     }
 
-    /* --- 10 SECONDS FLUCTUATING CALCULATOR --- */
-    function start10SecCalculation() {
-      document.getElementById('laserBeam').style.display = 'block';
+    function processScanTick(eyesDetected) {
+      const now = Date.now();
+      if (!lastTimestamp) {
+        lastTimestamp = now;
+        return;
+      }
+      const delta = now - lastTimestamp;
+      lastTimestamp = now;
+
+      if (!eyesDetected) return; // Only advance progress while eyes are visible
+
+      accumulatedTime += delta;
 
       const cuteFill = document.getElementById('cutenessFill');
       const sweetFill = document.getElementById('sweetnessFill');
       const cuteVal = document.getElementById('cuteVal');
       const sweetVal = document.getElementById('sweetVal');
 
-      const startTime = Date.now();
-      const duration = 10000; // 10 seconds
+      if (accumulatedTime < REQUIRED_TIME) {
+        // Fluctuating numbers between 15% and 99%
+        const randCute = Math.floor(Math.random() * 85) + 15;
+        const randSweet = Math.floor(Math.random() * 85) + 15;
 
-      const calcInterval = setInterval(() => {
-        const elapsed = Date.now() - startTime;
+        cuteFill.style.width = randCute + "%";
+        cuteVal.innerText = randCute + "%";
 
-        if (elapsed < duration) {
-          // Fluctuates unpredictably between 20% and 99%
-          const randCute = Math.floor(Math.random() * 85) + 15;
-          const randSweet = Math.floor(Math.random() * 85) + 15;
+        sweetFill.style.width = randSweet + "%";
+        sweetVal.innerText = randSweet + "%";
+      } else {
+        // 10 total seconds of eye detection complete -> Overload!
+        calculationFinished = true;
 
-          cuteFill.style.width = randCute + "%";
-          cuteVal.innerText = randCute + "%";
+        cuteFill.style.width = "100%";
+        cuteVal.innerText = "100% ⚠️";
+        sweetFill.style.width = "100%";
+        sweetVal.innerText = "100% ⚠️";
 
-          sweetFill.style.width = randSweet + "%";
-          sweetVal.innerText = randSweet + "%";
-        } else {
-          // Blast to 100% and explode
-          clearInterval(calcInterval);
-          cuteFill.style.width = "100%";
-          cuteVal.innerText = "100% ⚠️";
-          sweetFill.style.width = "100%";
-          sweetVal.innerText = "100% ⚠️";
+        document.getElementById('laserBeam').style.display = 'none';
 
-          document.getElementById('laserBeam').style.display = 'none';
-
-          // Trigger Overload Explosion
-          setTimeout(() => {
-            triggerExplosion();
-          }, 600);
-        }
-      }, 100);
+        setTimeout(() => {
+          triggerExplosion();
+        }, 500);
+      }
     }
 
     function triggerExplosion() {
-      // Confetti burst
       confetti({
         particleCount: 180,
         spread: 90,
@@ -886,7 +914,6 @@ that would have been too easy.
       alert("Happy Birthday, Luna! You broke the system with maximum cuteness. 🎂✨");
     }
 
-    // Keyboard support for Enter
     document.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         const loginWrapper = document.getElementById('loginWrapper');
