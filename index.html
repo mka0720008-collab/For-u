@@ -661,7 +661,6 @@
       overflow: hidden;
     }
 
-    /* Party spotlights in background */
     .party-glow {
       position: absolute;
       width: 380px;
@@ -678,7 +677,6 @@
       100% { transform: translate(-30%, -30%) scale(0.9); }
     }
 
-    /* The Dancing Panda Rig */
     .dancing-panda-container {
       width: 260px;
       height: 280px;
@@ -691,18 +689,11 @@
     }
 
     @keyframes pandaFullDance {
-      0% {
-        transform: rotate(-9deg) translateY(0) scale(1, 0.96);
-      }
-      50% {
-        transform: rotate(0deg) translateY(-18px) scale(0.96, 1.05);
-      }
-      100% {
-        transform: rotate(9deg) translateY(0) scale(1, 0.96);
-      }
+      0% { transform: rotate(-9deg) translateY(0) scale(1, 0.96); }
+      50% { transform: rotate(0deg) translateY(-18px) scale(0.96, 1.05); }
+      100% { transform: rotate(9deg) translateY(0) scale(1, 0.96); }
     }
 
-    /* Arm Waving Animations */
     .arm-left {
       transform-origin: 90px 190px;
       animation: waveLeftArm 0.7s infinite alternate ease-in-out;
@@ -723,7 +714,6 @@
       100% { transform: rotate(35deg); }
     }
 
-    /* Ears Wiggle */
     .ear-left {
       transform-origin: 75px 75px;
       animation: earWiggle 0.5s infinite alternate ease-in-out;
@@ -1013,7 +1003,7 @@ that would have been too easy.
   <!-- 5. INTERACTIVE BIRTHDAY CAKE STAGE -->
   <div id="cakeStage">
     <div class="cake-title">
-      <h2>blow the candle in...[span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span)</h2>
+      <h2>blow the candle in...</h2>
       <div class="countdown-text" id="countdownTimer">3</div>
     </div>
 
@@ -1107,7 +1097,7 @@ that would have been too easy.
     </div>
 
     <div class="singing-lyrics">
-      happy birthday[span_2](start_span)[span_2](end_span)
+      happy birthday
       <span>dancing for you, Luna! 🐼🎉💃</span>
     </div>
 
