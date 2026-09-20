@@ -646,13 +646,13 @@
       box-shadow: 35px 8px 0 0 #f472b6, 75px 12px 0 0 #f472b6, 120px 6px 0 0 #f472b6, 170px 10px 0 0 #f472b6, 210px 7px 0 0 #f472b6;
     }
 
-    /* --- 6. CUTE WAVING PANDA BIRTHDAY STAGE --- */
+    /* --- 6. REAL PANDA FINALE STAGE --- */
     #singingStage {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 140;
-      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fef2f2 50%, #fee2e2 100%);
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fff1f2 50%, #fee2e2 100%);
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -661,56 +661,30 @@
       overflow: hidden;
     }
 
-    .panda-container {
-      width: 250px;
-      height: 270px;
-      position: relative;
+    .panda-image-wrapper {
+      width: 260px;
+      height: 260px;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: pandaSway 2s infinite ease-in-out alternate;
+      animation: pandaFloat 2.2s infinite ease-in-out alternate;
     }
 
-    @keyframes pandaSway {
-      0% { transform: translateY(0) rotate(-2deg); }
-      100% { transform: translateY(-8px) rotate(2deg); }
+    @keyframes pandaFloat {
+      0% { transform: translateY(0) rotate(-1.5deg); }
+      100% { transform: translateY(-12px) rotate(1.5deg); }
     }
 
-    /* Waving Raised Paw Animation */
-    .waving-paw {
-      transform-origin: 110px 165px;
-      animation: waveHand 0.9s infinite alternate ease-in-out;
-    }
-
-    @keyframes waveHand {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(-22deg); }
-    }
-
-    .waving-ear-left {
-      transform-origin: 115px 95px;
-      animation: earJiggle 1.5s infinite alternate ease-in-out;
-    }
-
-    .waving-ear-right {
-      transform-origin: 235px 85px;
-      animation: earJiggle 1.5s infinite alternate ease-in-out 0.3s;
-    }
-
-    @keyframes earJiggle {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.06) rotate(4deg); }
-    }
-
-    .panda-svg {
+    .actual-panda-img {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 15px 25px rgba(225, 29, 72, 0.15));
+      object-fit: contain;
+      filter: drop-shadow(0 18px 25px rgba(244, 63, 94, 0.2));
     }
 
     .birthday-heading {
-      margin-top: 1.2rem;
-      font-size: 1.95rem;
+      margin-top: 1.5rem;
+      font-size: 2rem;
       font-weight: 900;
       color: #1e293b;
       letter-spacing: -0.5px;
@@ -719,33 +693,29 @@
 
     @keyframes popText {
       0% { transform: scale(1); }
-      100% { transform: scale(1.04); }
+      100% { transform: scale(1.03); }
     }
 
-    /* Cutest Button: Continue to read the letter */
+    /* Cute Button: Continue to read the letter */
     .read-letter-btn {
-      margin-top: 1.4rem;
+      margin-top: 1.5rem;
       background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
       color: #ffffff;
       border: 2px solid #ffffff;
-      padding: 13px 26px;
+      padding: 14px 28px;
       border-radius: 50px;
-      font-size: 0.96rem;
+      font-size: 1rem;
       font-weight: 800;
-      letter-spacing: 0.3px;
       cursor: pointer;
       box-shadow: 0 0 25px rgba(244, 63, 94, 0.4), 0 4px 15px rgba(0, 0, 0, 0.08);
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .read-letter-btn:active {
-      transform: scale(0.94);
+      transform: scale(0.95);
     }
 
-    /* --- 7. LETTER MODAL --- */
+    /* --- 7. LETTER SCREEN --- */
     #letterStage {
       display: none;
       position: fixed;
@@ -1034,77 +1004,10 @@ that would have been too easy.
     </div>
   </div>
 
-  <!-- 6. WAVING PANDA FINALE STAGE -->
+  <!-- 6. HIGH-RES PANDA FINALE STAGE -->
   <div id="singingStage">
-    <div class="panda-container">
-      <!-- Cutest Vector of the Sitting Panda with Raised Waving Paw matching reference -->
-      <svg class="panda-svg" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Back Sitting Left Foot -->
-        <ellipse cx="95" cy="275" rx="34" ry="24" fill="#1e293b" transform="rotate(-15 95 275)"/>
-        <ellipse cx="85" cy="275" rx="8" ry="6" fill="#475569"/>
-        <ellipse cx="98" cy="265" rx="4" ry="5" fill="#475569"/>
-        <ellipse cx="108" cy="270" rx="4" ry="5" fill="#475569"/>
-
-        <!-- Back Sitting Right Foot -->
-        <ellipse cx="235" cy="275" rx="34" ry="24" fill="#1e293b" transform="rotate(15 235 275)"/>
-        <ellipse cx="245" cy="275" rx="8" ry="6" fill="#475569"/>
-        <ellipse cx="232" cy="265" rx="4" ry="5" fill="#475569"/>
-        <ellipse cx="222" cy="270" rx="4" ry="5" fill="#475569"/>
-
-        <!-- Chubby Panda Body -->
-        <path d="M115 190 C100 230, 100 290, 175 290 C250 290, 250 230, 235 190 Z" fill="#1e293b"/>
-        <!-- White Belly Patch -->
-        <ellipse cx="175" cy="245" rx="55" ry="42" fill="#ffffff"/>
-
-        <!-- Resting Left Arm -->
-        <ellipse cx="195" cy="205" rx="28" ry="17" fill="#1e293b" transform="rotate(22 195 205)"/>
-
-        <!-- Raised Waving Right Arm -->
-        <g class="waving-paw">
-          <path d="M125 185 C95 160, 50 145, 60 115 C70 95, 105 125, 125 155 Z" fill="#1e293b"/>
-          <!-- Paw Pads -->
-          <ellipse cx="70" cy="120" rx="9" ry="7" fill="#475569"/>
-          <circle cx="62" cy="110" r="3" fill="#475569"/>
-          <circle cx="68" cy="106" r="3" fill="#475569"/>
-          <circle cx="76" cy="107" r="3" fill="#475569"/>
-        </g>
-
-        <!-- Panda Ears -->
-        <g class="waving-ear-left">
-          <circle cx="118" cy="92" r="28" fill="#1e293b"/>
-        </g>
-        <g class="waving-ear-right">
-          <circle cx="238" cy="85" r="28" fill="#1e293b"/>
-        </g>
-
-        <!-- Big Fluffy Round Head -->
-        <ellipse cx="178" cy="142" rx="76" ry="66" fill="#ffffff" stroke="#1e293b" stroke-width="4"/>
-
-        <!-- Big Expressive Eye Patches -->
-        <ellipse cx="140" cy="138" rx="22" ry="28" fill="#1e293b" transform="rotate(-15 140 138)"/>
-        <ellipse cx="218" cy="134" rx="22" ry="28" fill="#1e293b" transform="rotate(18 218 134)"/>
-
-        <!-- Sparkling Pupils -->
-        <circle cx="145" cy="134" r="10" fill="#ffffff"/>
-        <circle cx="147" cy="132" r="4" fill="#0f172a"/>
-        <circle cx="213" cy="130" r="10" fill="#ffffff"/>
-        <circle cx="211" cy="128" r="4" fill="#0f172a"/>
-
-        <!-- Cheerful Eyebrows -->
-        <path d="M132 108 Q142 102 148 107" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <path d="M210 105 Q218 100 226 105" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-        <!-- Soft Pink Cheeks -->
-        <ellipse cx="118" cy="158" rx="12" ry="8" fill="#f43f5e" opacity="0.4"/>
-        <ellipse cx="238" cy="154" rx="12" ry="8" fill="#f43f5e" opacity="0.4"/>
-
-        <!-- Cute Panda Nose -->
-        <path d="M172 146 Q178 142 184 146 Q178 152 172 146 Z" fill="#1e293b"/>
-
-        <!-- Big Smiling Happy Mouth -->
-        <path d="M165 156 Q178 150 191 156 Q178 185 165 156 Z" fill="#be185d" stroke="#1e293b" stroke-width="2.5"/>
-        <ellipse cx="178" cy="172" rx="8" ry="5" fill="#fb7185"/>
-      </svg>
+    <div class="panda-image-wrapper">
+      <img src="panda.png" alt="Cute Panda" class="actual-panda-img" id="pandaImg" onerror="this.src='https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=600&q=80'" />
     </div>
 
     <!-- Clean, Simple Title -->
@@ -1379,7 +1282,7 @@ that would have been too easy.
 
         document.getElementById('laserBeam').style.display = 'none';
 
-        // STOP BGM EXACTLY ON OVERLOAD EXPLOSION
+        // STOP BGM ON OVERLOAD EXPLOSION
         stopMusic();
 
         setTimeout(() => {
@@ -1505,9 +1408,8 @@ that would have been too easy.
 
         playBirthdaySong();
 
-        // Celebration Confetti
         confetti({
-          particleCount: 150,
+          particleCount: 160,
           spread: 90,
           origin: { y: 0.6 },
           colors: ['#f43f5e', '#38bdf8', '#fbbf24', '#1e293b']
@@ -1519,7 +1421,7 @@ that would have been too easy.
     function openLetter() {
       document.getElementById('letterStage').style.display = 'flex';
       confetti({
-        particleCount: 80,
+        particleCount: 90,
         spread: 70,
         origin: { y: 0.5 },
         colors: ['#f43f5e', '#fb7185', '#ffffff']
