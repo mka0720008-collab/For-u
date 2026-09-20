@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Moonlit Odyssey 🌙</title>
+  <title>Moonlit Birthday for Luna 🌙</title>
   
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Comic Sans MS', 'Segoe UI', Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -173,7 +173,7 @@
       100% { filter: drop-shadow(0 0 25px rgba(125, 211, 252, 0.6)) rotate(360deg); }
     }
 
-    /* --- DISCLAIMER MODAL --- */
+    /* --- 2. DISCLAIMER MODAL --- */
     #disclaimerModal {
       display: none;
       position: fixed;
@@ -269,7 +269,7 @@
       cursor: not-allowed;
     }
 
-    /* --- CAMERA OVAL MIRROR & CALCULATOR PAGE --- */
+    /* --- 3. CAMERA OVAL MIRROR SCANNER --- */
     #scannerStage {
       display: none;
       position: fixed;
@@ -403,7 +403,7 @@
       box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
     }
 
-    /* --- 4. EXPLOSION / OVERLOAD OVERLAY --- */
+    /* --- 4. OVERLOAD ALERT --- */
     #dangerAlert {
       display: none;
       position: fixed;
@@ -447,85 +447,258 @@
       margin-bottom: 1.5rem;
     }
 
-    .similar-img-btn {
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      color: #030712;
+    .cake-transition-btn {
+      background: linear-gradient(135deg, #f472b6, #fb7185);
+      color: #ffffff;
       border: none;
-      padding: 13px 22px;
-      font-size: 0.92rem;
+      padding: 13px 26px;
+      font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: 0.5px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+      box-shadow: 0 0 25px rgba(244, 114, 182, 0.6);
       transition: transform 0.15s ease;
     }
 
-    .similar-img-btn:active {
+    .cake-transition-btn:active {
       transform: scale(0.96);
     }
 
-    /* --- 5. SIMILAR IMAGE REVEAL MODAL --- */
-    #imageRevealModal {
+    /* --- 5. INTERACTIVE BIRTHDAY CAKE STAGE --- */
+    #cakeStage {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 110;
-      background: rgba(2, 6, 23, 0.95);
-      backdrop-filter: blur(18px);
+      z-index: 120;
+      background: radial-gradient(circle at 50% 30%, #e0f2fe 0%, #bae6fd 60%, #93c5fd 100%);
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding: 1.5rem;
-      text-align: center;
+      justify-content: flex-end;
+      padding-bottom: 4rem;
+      overflow: hidden;
     }
 
-    .match-card {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(147, 197, 253, 0.3);
-      border-radius: 24px;
-      max-width: 380px;
+    .cake-title {
+      position: absolute;
+      top: 14%;
+      text-align: center;
       width: 100%;
-      padding: 1.5rem;
-      box-shadow: 0 0 45px rgba(56, 189, 248, 0.3);
+      padding: 0 1rem;
+    }
+
+    .cake-title h2 {
+      font-size: 2.1rem;
+      color: #1e293b;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+    }
+
+    .countdown-text {
+      font-size: 1.5rem;
+      color: #ec4899;
+      font-weight: 800;
+      margin-top: 8px;
+      min-height: 38px;
+    }
+
+    /* Illustrated Cake Container */
+    .cake-container {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 2rem;
     }
 
-    .match-card h3 {
-      font-size: 1.2rem;
-      color: #7dd3fc;
-      margin-bottom: 0.3rem;
+    /* Candle & Flame */
+    .flame-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .candle-flame {
+      width: 24px;
+      height: 42px;
+      background: radial-gradient(ellipse at bottom, #fed7aa 20%, #f97316 70%, #ea580c 100%);
+      border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+      box-shadow: 0 0 25px #fb923c, 0 0 45px #f97316;
+      animation: flicker 0.7s infinite alternate ease-in-out;
+      transform-origin: bottom center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-2deg); }
+      50% { transform: scale(1.08, 0.95) rotate(2deg); }
+      100% { transform: scale(0.95, 1.05) rotate(-1deg); }
+    }
+
+    .smoke {
+      display: none;
+      position: absolute;
+      top: -15px;
+      width: 8px;
+      height: 30px;
+      background: rgba(148, 163, 184, 0.7);
+      border-radius: 10px;
+      filter: blur(4px);
+      animation: riseSmoke 1.5s ease-out forwards;
+    }
+
+    @keyframes riseSmoke {
+      0% { opacity: 0.8; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-60px) scale(2.5) rotate(15deg); }
+    }
+
+    .candle-stick {
+      width: 18px;
+      height: 75px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #f472b6,
+        #f472b6 10px,
+        #fbcfe8 10px,
+        #fbcfe8 20px
+      );
+      border: 2px solid #334155;
+      border-radius: 4px 4px 0 0;
+      margin-top: -3px;
+      z-index: 4;
+    }
+
+    /* Cream dollops atop top tier */
+    .dollop-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: -10px;
+      z-index: 3;
+    }
+
+    .dollop {
+      width: 26px;
+      height: 22px;
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 50% 50% 40% 40%;
+    }
+
+    /* Cake Tiers */
+    .tier-top {
+      width: 170px;
+      height: 95px;
+      background: #fef08a;
+      border: 3px solid #334155;
+      border-radius: 35px 35px 8px 8px;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .tier-top::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -5%;
+      width: 110%;
+      height: 55%;
+      background: #f472b6;
+      border-radius: 0 0 25px 25px;
+      box-shadow: 
+        28px 8px 0 0 #f472b6,
+        55px 12px 0 0 #f472b6,
+        85px 6px 0 0 #f472b6,
+        120px 10px 0 0 #f472b6;
+    }
+
+    .tier-bottom {
+      width: 250px;
+      height: 95px;
+      background: #fef08a;
+      border: 3px solid #334155;
+      border-radius: 30px 30px 12px 12px;
+      position: relative;
+      overflow: hidden;
+      margin-top: -6px;
+      z-index: 1;
+    }
+
+    .tier-bottom::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -5%;
+      width: 110%;
+      height: 55%;
+      background: #f472b6;
+      border-radius: 0 0 25px 25px;
+      box-shadow: 
+        35px 8px 0 0 #f472b6,
+        75px 12px 0 0 #f472b6,
+        120px 6px 0 0 #f472b6,
+        170px 10px 0 0 #f472b6,
+        210px 7px 0 0 #f472b6;
+    }
+
+    /* Wish Celebration Modal */
+    #celebrationCard {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(3, 7, 18, 0.82);
+      backdrop-filter: blur(14px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .card-content {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(244, 114, 182, 0.4);
+      border-radius: 26px;
+      max-width: 400px;
+      padding: 2.2rem 1.8rem;
+      box-shadow: 0 0 45px rgba(244, 114, 182, 0.35);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .card-content h1 {
+      font-size: 1.8rem;
+      color: #f472b6;
+      margin-bottom: 0.8rem;
       letter-spacing: 1px;
     }
 
-    .match-card .match-score {
-      font-size: 0.85rem;
-      color: #38bdf8;
-      margin-bottom: 1.2rem;
+    .card-content p {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.7;
+      margin-bottom: 1.4rem;
     }
 
-    .match-img-box {
-      width: 220px;
-      height: 220px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 2px solid rgba(56, 189, 248, 0.4);
-      margin-bottom: 1.2rem;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
-    }
-
-    .match-img-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .match-desc {
-      color: #cbd5e1;
+    .replay-wish-btn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #030712;
+      border: none;
+      padding: 10px 24px;
       font-size: 0.88rem;
-      line-height: 1.6;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -534,7 +707,7 @@
   <div class="stars"></div>
   <div class="lunar-haze"></div>
 
-  <!-- DIRECT AUDIO: Uses bgm.mp3 uploaded to repo -->
+  <!-- DIRECT BGM AUDIO -->
   <audio id="bgmTrack" loop preload="auto">
     <source src="bgm.mp3" type="audio/mpeg">
   </audio>
@@ -723,23 +896,52 @@ that would have been too easy.
       <p>
         WARNING: Cuteness and Sweetness levels exceeded theoretical physical limits (9999%).
         <br/><br/>
-        Visual sensors burnt out. We scanned our global neural archives for an equivalent match...
+        Hardware sensors have melted! Initiating birthday protocol to cool down the system...
       </p>
-      <button class="similar-img-btn" onclick="revealSimilarImage()">Found a similar image of yours 🔍</button>
+      <button class="cake-transition-btn" onclick="openCakeStage()">Blow the Candle 🎂✨</button>
     </div>
   </div>
 
-  <!-- 5. MATCH RESULT MODAL -->
-  <div id="imageRevealModal">
-    <div class="match-card">
-      <h3>Visual Match: 100%</h3>
-      <p class="match-score">Exact Radiance Coordinates</p>
-      <div class="match-img-box">
-        <img src="https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?auto=format&fit=crop&w=600&q=80" alt="Luna match" id="matchedPhoto" />
+  <!-- 5. INTERACTIVE BIRTHDAY CAKE & CANDLE STAGE -->
+  <div id="cakeStage">
+    <div class="cake-title">
+      <h2>blow the candle in...</h2>
+      <div class="countdown-text" id="countdownTimer">3...</div>
+    </div>
+
+    <div class="cake-container" onclick="extinguishCandle()">
+      <!-- Candle & Flame -->
+      <div class="flame-wrapper">
+        <div class="candle-flame" id="flame"></div>
+        <div class="smoke" id="candleSmoke"></div>
+        <div class="candle-stick"></div>
       </div>
-      <p class="match-desc">
-        Database confirms: Nothing in the universe compares, but the Moon comes closest. ✨
+
+      <!-- Cream Dollops -->
+      <div class="dollop-row">
+        <div class="dollop"></div>
+        <div class="dollop"></div>
+        <div class="dollop"></div>
+        <div class="dollop"></div>
+      </div>
+
+      <!-- Top Tier -->
+      <div class="tier-top"></div>
+
+      <!-- Bottom Tier -->
+      <div class="tier-bottom"></div>
+    </div>
+  </div>
+
+  <!-- 6. FINAL WISH CARD -->
+  <div id="celebrationCard">
+    <div class="card-content">
+      <h1>Happy Birthday, Luna! 🎂🌙</h1>
+      <p>
+        May your year ahead be as bright, beautiful, and wonderful as your smile. 
+        Make a wish, keep shining, and never stop lighting up every room you walk into. ✨
       </p>
+      <button class="replay-wish-btn" onclick="reigniteCandle()">Relight Candle 🕯️</button>
     </div>
   </div>
 
@@ -762,9 +964,7 @@ that would have been too easy.
       const box = document.getElementById('loginCard');
 
       if (user.toLowerCase() === VALID_ID.toLowerCase() && pass === VALID_PASS) {
-        // Trigger BGM immediately on click
         playDirectAudio();
-
         document.getElementById('loginWrapper').style.display = 'none';
         document.getElementById('moonContainer').style.display = 'block';
         document.getElementById('disclaimerModal').style.display = 'flex';
@@ -775,14 +975,11 @@ that would have been too easy.
       }
     }
 
-    // Direct, infinite loop audio handler
     function playDirectAudio() {
       const audio = document.getElementById('bgmTrack');
       if (!audio) return;
-
       audio.volume = 0.85;
 
-      // Force infinite replay loop right as the file finishes
       audio.addEventListener('ended', function () {
         audio.currentTime = 0;
         audio.play();
@@ -877,7 +1074,7 @@ that would have been too easy.
       }
     }
 
-    /* --- REAL EYE TRACKING SCANNER VIA MEDIAPIPE FACE MESH --- */
+    /* --- CAMERA & EYE DETECTION --- */
     let accumulatedTime = 0;
     const REQUIRED_TIME = 10000;
     let lastTimestamp = null;
@@ -999,16 +1196,71 @@ that would have been too easy.
       document.getElementById('dangerAlert').style.display = 'flex';
     }
 
-    function revealSimilarImage() {
-      document.getElementById('dangerAlert').style.display = 'none';
-      document.getElementById('imageRevealModal').style.display = 'flex';
+    /* --- CAKE & CANDLE BLOW OUT LOGIC --- */
+    let candleBlown = false;
 
+    function openCakeStage() {
+      document.getElementById('dangerAlert').style.display = 'none';
+      document.getElementById('scannerStage').style.display = 'none';
+      
+      const cakeStage = document.getElementById('cakeStage');
+      cakeStage.style.display = 'flex';
+
+      startCandleCountdown();
+    }
+
+    function startCandleCountdown() {
+      const timerEl = document.getElementById('countdownTimer');
+      let count = 3;
+      timerEl.innerText = `${count}...`;
+
+      const cd = setInterval(() => {
+        count--;
+        if (count > 0) {
+          timerEl.innerText = `${count}...`;
+        } else if (count === 0) {
+          timerEl.innerText = "Blow the candle! 🌬️";
+          clearInterval(cd);
+        }
+      }, 1000);
+    }
+
+    function extinguishCandle() {
+      if (candleBlown) return;
+      candleBlown = true;
+
+      const flame = document.getElementById('flame');
+      const smoke = document.getElementById('candleSmoke');
+
+      // Flame fades out
+      flame.style.opacity = '0';
+      flame.style.transform = 'scale(0.1)';
+      smoke.style.display = 'block';
+
+      // Confetti burst
       confetti({
         particleCount: 220,
         spread: 100,
-        origin: { y: 0.6 },
-        colors: ['#38bdf8', '#7dd3fc', '#e0f2fe', '#ffffff']
+        origin: { y: 0.55 },
+        colors: ['#f472b6', '#38bdf8', '#fbbf24', '#ffffff']
       });
+
+      setTimeout(() => {
+        document.getElementById('celebrationCard').style.display = 'flex';
+      }, 1200);
+    }
+
+    function reigniteCandle() {
+      candleBlown = false;
+      const flame = document.getElementById('flame');
+      const smoke = document.getElementById('candleSmoke');
+
+      flame.style.opacity = '1';
+      flame.style.transform = 'scale(1)';
+      smoke.style.display = 'none';
+
+      document.getElementById('celebrationCard').style.display = 'none';
+      startCandleCountdown();
     }
 
     document.addEventListener('keypress', function (e) {
