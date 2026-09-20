@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Luna 🌙</title>
+  <title>Moonlit Birthday for Luna 🌙</title>
   
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -127,7 +127,6 @@
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
     }
 
-    /* Error and Try Again Box */
     .error-container {
       display: none;
       flex-direction: column;
@@ -549,7 +548,7 @@
       box-shadow: 0 0 25px #fb923c, 0 0 45px #f97316;
       animation: flicker 0.7s infinite alternate ease-in-out;
       transform-origin: bottom center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     @keyframes flicker {
@@ -647,13 +646,13 @@
       box-shadow: 35px 8px 0 0 #f472b6, 75px 12px 0 0 #f472b6, 120px 6px 0 0 #f472b6, 170px 10px 0 0 #f472b6, 210px 7px 0 0 #f472b6;
     }
 
-    /* --- 6. SINGING CHARACTER STAGE --- */
+    /* --- 6. SINGING PANDA STAGE --- */
     #singingStage {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 140;
-      background: #ffffff;
+      background: radial-gradient(circle at 50% 30%, #fef3c7 0%, #fee2e2 50%, #e0e7ff 100%);
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -661,29 +660,45 @@
       text-align: center;
     }
 
-    .character-box {
-      width: 280px;
-      height: 280px;
+    .panda-box {
+      width: 270px;
+      height: 270px;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: bounceSing 0.5s infinite alternate ease-in-out;
+      animation: pandaBounce 0.45s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    @keyframes bounceSing {
-      0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.05) translateY(-8px); }
+    @keyframes pandaBounce {
+      0% { transform: translateY(0) scale(1, 1); }
+      100% { transform: translateY(-16px) scale(0.97, 1.05); }
     }
 
-    /* SVG Character matching the video */
-    .character-svg {
+    .panda-svg {
       width: 100%;
       height: 100%;
+      filter: drop-shadow(0 12px 25px rgba(244, 114, 182, 0.3));
+    }
+
+    .musical-notes {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: floatNotes 2s infinite ease-out;
+      opacity: 0;
+    }
+
+    .note1 { top: 0px; left: 15px; animation-delay: 0.2s; }
+    .note2 { top: -20px; right: 25px; animation-delay: 0.8s; }
+
+    @keyframes floatNotes {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-40px) rotate(20deg); opacity: 0; }
     }
 
     .singing-lyrics {
-      margin-top: 1.5rem;
+      margin-top: 1.2rem;
       font-size: 2.2rem;
       font-weight: 900;
       color: #1e293b;
@@ -695,19 +710,20 @@
     .singing-lyrics span {
       display: block;
       color: #ec4899;
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       margin-top: 0.3rem;
     }
 
     .final-heart-tag {
       margin-top: 1.2rem;
-      background: #fdf2f8;
-      border: 1px solid #f472b6;
-      padding: 8px 20px;
+      background: #ffffff;
+      border: 1.5px solid #f472b6;
+      padding: 9px 24px;
       border-radius: 30px;
       color: #db2777;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
+      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.25);
     }
   </style>
 </head>
@@ -735,7 +751,7 @@
       <input type="password" id="passInput" class="aesthetic-input" placeholder="Password" />
       <button class="glow-btn" onclick="checkCredentials()">Enter 🪐</button>
 
-      <!-- CUSTOM ERROR MESSAGE & TRY AGAIN BUTTON -->
+      <!-- CUSTOM INSTA ERROR MESSAGE & TRY AGAIN BUTTON -->
       <div class="error-container" id="errorContainer">
         <div class="error-msg">Don't you remember your Archie's Insta password? 🥺</div>
         <button class="try-again-btn" onclick="resetLoginInputs()">Try Again</button>
@@ -942,42 +958,63 @@ that would have been too easy.
     </div>
   </div>
 
-  <!-- 6. SINGING CHARACTER ANIMATION SCREEN -->
+  <!-- 6. CUTE SINGING PANDA ANIMATION SCREEN -->
   <div id="singingStage">
-    <div class="character-box">
-      <!-- Cutest Vector of Pio holding his friend with wide singing mouth -->
-      <svg class="character-svg" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Big Teal Guy (Pio) -->
-        <ellipse cx="150" cy="180" rx="95" ry="105" fill="#75c9bf" stroke="#334155" stroke-width="4"/>
-        <ellipse cx="150" cy="205" rx="65" ry="75" fill="#e2f5f1"/>
-        <!-- Eyes -->
-        <ellipse cx="105" cy="120" rx="5" ry="7" fill="#334155"/>
-        <ellipse cx="195" cy="120" rx="5" ry="7" fill="#334155"/>
-        <!-- Beak -->
-        <ellipse cx="150" cy="132" rx="22" ry="12" fill="#58a69e" stroke="#334155" stroke-width="3"/>
-        
-        <!-- Little Pink Friend with wide open singing mouth -->
-        <path d="M110 160 C110 130, 190 130, 190 160 C190 220, 110 220, 110 160 Z" fill="#fbb6ce" stroke="#334155" stroke-width="4"/>
-        <!-- Pink Feathers/Ears -->
-        <circle cx="105" cy="150" r="10" fill="#f472b6"/>
-        <circle cx="100" cy="165" r="9" fill="#f472b6"/>
-        <circle cx="195" cy="150" r="10" fill="#f472b6"/>
-        <circle cx="200" cy="165" r="9" fill="#f472b6"/>
-        <!-- Singing Mouth (Wide Open) -->
-        <path d="M125 165 Q150 145 175 165 Q150 215 125 165 Z" fill="#be185d" stroke="#334155" stroke-width="3"/>
-        <ellipse cx="150" cy="190" rx="14" ry="10" fill="#fb7185"/>
-        <!-- Tiny Squinted Singing Eyes -->
-        <path d="M125 152 Q130 148 135 152" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
-        <path d="M165 152 Q170 148 175 152" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+    <div class="panda-box">
+      <div class="musical-notes note1">🎵</div>
+      <div class="musical-notes note2">🎶</div>
+
+      <!-- Cute Animated Singing Panda Vector -->
+      <svg class="panda-svg" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ears -->
+        <circle cx="75" cy="80" r="32" fill="#1e293b"/>
+        <circle cx="75" cy="80" r="18" fill="#f472b6" opacity="0.6"/>
+        <circle cx="225" cy="80" r="32" fill="#1e293b"/>
+        <circle cx="225" cy="80" r="18" fill="#f472b6" opacity="0.6"/>
+
+        <!-- Body -->
+        <ellipse cx="150" cy="205" rx="95" ry="85" fill="#f8fafc" stroke="#1e293b" stroke-width="5"/>
+        <!-- Belly Patch -->
+        <ellipse cx="150" cy="215" rx="65" ry="55" fill="#f1f5f9"/>
+
+        <!-- Head -->
+        <ellipse cx="150" cy="130" rx="90" ry="75" fill="#ffffff" stroke="#1e293b" stroke-width="5"/>
+
+        <!-- Eye Patches -->
+        <ellipse cx="105" cy="125" rx="22" ry="28" fill="#1e293b" transform="rotate(-15 105 125)"/>
+        <ellipse cx="195" cy="125" rx="22" ry="28" fill="#1e293b" transform="rotate(15 195 125)"/>
+
+        <!-- Happy Singing Eyes -->
+        <path d="M96 122 Q105 110 114 122" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M186 122 Q195 110 204 122" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+        <!-- Blushing Cheeks -->
+        <circle cx="85" cy="150" r="14" fill="#f472b6" opacity="0.65"/>
+        <circle cx="215" cy="150" r="14" fill="#f472b6" opacity="0.65"/>
+
+        <!-- Cute Little Nose -->
+        <ellipse cx="150" cy="142" rx="9" ry="6" fill="#1e293b"/>
+
+        <!-- Open Singing Mouth -->
+        <path d="M136 152 Q150 142 164 152 Q150 188 136 152 Z" fill="#e11d48" stroke="#1e293b" stroke-width="3"/>
+        <ellipse cx="150" cy="172" rx="10" ry="6" fill="#fb7185"/>
+
+        <!-- Paws holding microphone -->
+        <circle cx="115" cy="210" r="18" fill="#1e293b"/>
+        <circle cx="185" cy="210" r="18" fill="#1e293b"/>
+
+        <!-- Microphone -->
+        <line x1="150" y1="215" x2="150" y2="245" stroke="#64748b" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="150" cy="205" r="13" fill="#38bdf8" stroke="#0284c7" stroke-width="3"/>
       </svg>
     </div>
 
     <div class="singing-lyrics" id="lyricsText">
       happy birthday
-      <span>to youuuuu! 🎵🎂</span>
+      <span>to youuuuu! 🐼🎂🎵</span>
     </div>
 
-    <div class="final-heart-tag">Made with extra effort for Luna 🌙</div>
+    <div class="final-heart-tag">Made with endless love for Luna 🌙💖</div>
   </div>
 
   <script>
@@ -1033,6 +1070,14 @@ that would have been too easy.
             audio.play();
           }, { once: true });
         });
+      }
+    }
+
+    function stopMusic() {
+      const audio = document.getElementById('bgmTrack');
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
       }
     }
 
@@ -1220,6 +1265,9 @@ that would have been too easy.
 
         document.getElementById('laserBeam').style.display = 'none';
 
+        // STOP MUSIC RIGHT ON OVERLOAD EXPLOSION
+        stopMusic();
+
         setTimeout(() => {
           triggerExplosion();
         }, 500);
@@ -1237,7 +1285,43 @@ that would have been too easy.
       document.getElementById('dangerAlert').style.display = 'flex';
     }
 
-    /* --- CAKE & SINGING CHARACTER TRANSITION --- */
+    /* --- REALISTIC BLOW SOUND SYNTHESIS --- */
+    function playBlowSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        const bufferSize = ctx.sampleRate * 0.55;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450, ctx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.5);
+
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.01, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 0.12);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.55);
+
+        noise.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        noise.start();
+      } catch (e) {
+        console.log("AudioContext blocked:", e);
+      }
+    }
+
+    /* --- CAKE & SINGING PANDA TRANSITION --- */
     let candleBlown = false;
 
     function openCakeStage() {
@@ -1262,7 +1346,6 @@ that would have been too easy.
         } else if (count === 0) {
           timerEl.innerText = "Blow! 🌬️";
           clearInterval(cd);
-          // Automatically blows out candle if not clicked within 1.5s
           setTimeout(() => {
             extinguishCandle();
           }, 1500);
@@ -1274,6 +1357,9 @@ that would have been too easy.
       if (candleBlown) return;
       candleBlown = true;
 
+      // Play synthesized realistic puff sound
+      playBlowSound();
+
       const flame = document.getElementById('flame');
       const smoke = document.getElementById('candleSmoke');
 
@@ -1281,20 +1367,19 @@ that would have been too easy.
       flame.style.transform = 'scale(0.1)';
       smoke.style.display = 'block';
 
-      // Transition smoothly into singing character
+      // Transition smoothly into Singing Panda Screen
       setTimeout(() => {
         document.getElementById('cakeStage').style.display = 'none';
         const singingStage = document.getElementById('singingStage');
         singingStage.style.display = 'flex';
 
-        // Fire festive celebration confetti
         confetti({
           particleCount: 200,
           spread: 110,
           origin: { y: 0.5 },
-          colors: ['#f472b6', '#38bdf8', '#fbbf24', '#75c9bf']
+          colors: ['#f472b6', '#38bdf8', '#fbbf24', '#1e293b']
         });
-      }, 1000);
+      }, 900);
     }
 
     document.addEventListener('keypress', function (e) {
