@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Moonlit Birthday for Luna 🌙</title>
+  <title>Happy Birthday Luna 🌙</title>
   
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -646,13 +646,13 @@
       box-shadow: 35px 8px 0 0 #f472b6, 75px 12px 0 0 #f472b6, 120px 6px 0 0 #f472b6, 170px 10px 0 0 #f472b6, 210px 7px 0 0 #f472b6;
     }
 
-    /* --- 6. DANCING PANDA BIRTHDAY STAGE --- */
+    /* --- 6. CUTE WAVING PANDA BIRTHDAY STAGE --- */
     #singingStage {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 140;
-      background: radial-gradient(circle at 50% 30%, #fff1f2 0%, #fce7f3 45%, #dbeafe 100%);
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fef2f2 50%, #fee2e2 100%);
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -661,132 +661,141 @@
       overflow: hidden;
     }
 
-    .party-glow {
-      position: absolute;
-      width: 380px;
-      height: 380px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(244, 114, 182, 0.35) 0%, transparent 70%);
-      animation: discoRotate 4s infinite linear;
-      pointer-events: none;
-    }
-
-    @keyframes discoRotate {
-      0% { transform: translate(-30%, -30%) scale(0.9); }
-      50% { transform: translate(30%, 30%) scale(1.15); }
-      100% { transform: translate(-30%, -30%) scale(0.9); }
-    }
-
-    .dancing-panda-container {
-      width: 260px;
-      height: 280px;
+    .panda-container {
+      width: 250px;
+      height: 270px;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: pandaFullDance 0.7s infinite alternate ease-in-out;
-      transform-origin: bottom center;
+      animation: pandaSway 2s infinite ease-in-out alternate;
     }
 
-    @keyframes pandaFullDance {
-      0% { transform: rotate(-9deg) translateY(0) scale(1, 0.96); }
-      50% { transform: rotate(0deg) translateY(-18px) scale(0.96, 1.05); }
-      100% { transform: rotate(9deg) translateY(0) scale(1, 0.96); }
+    @keyframes pandaSway {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-8px) rotate(2deg); }
     }
 
-    .arm-left {
-      transform-origin: 90px 190px;
-      animation: waveLeftArm 0.7s infinite alternate ease-in-out;
+    /* Waving Raised Paw Animation */
+    .waving-paw {
+      transform-origin: 110px 165px;
+      animation: waveHand 0.9s infinite alternate ease-in-out;
     }
 
-    .arm-right {
-      transform-origin: 230px 190px;
-      animation: waveRightArm 0.7s infinite alternate ease-in-out;
+    @keyframes waveHand {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-22deg); }
     }
 
-    @keyframes waveLeftArm {
-      0% { transform: rotate(-35deg); }
-      100% { transform: rotate(20deg); }
+    .waving-ear-left {
+      transform-origin: 115px 95px;
+      animation: earJiggle 1.5s infinite alternate ease-in-out;
     }
 
-    @keyframes waveRightArm {
-      0% { transform: rotate(-20deg); }
-      100% { transform: rotate(35deg); }
+    .waving-ear-right {
+      transform-origin: 235px 85px;
+      animation: earJiggle 1.5s infinite alternate ease-in-out 0.3s;
     }
 
-    .ear-left {
-      transform-origin: 75px 75px;
-      animation: earWiggle 0.5s infinite alternate ease-in-out;
-    }
-
-    .ear-right {
-      transform-origin: 245px 75px;
-      animation: earWiggle 0.5s infinite alternate ease-in-out 0.25s;
-    }
-
-    @keyframes earWiggle {
+    @keyframes earJiggle {
       0% { transform: scale(1); }
-      100% { transform: scale(1.08) rotate(6deg); }
+      100% { transform: scale(1.06) rotate(4deg); }
     }
 
     .panda-svg {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 14px 28px rgba(244, 114, 182, 0.4));
+      filter: drop-shadow(0 15px 25px rgba(225, 29, 72, 0.15));
     }
 
-    .musical-notes {
-      position: absolute;
-      font-size: 2.2rem;
-      animation: floatNotes 2s infinite ease-out;
-      opacity: 0;
-      user-select: none;
-    }
-
-    .note1 { top: -10px; left: 20px; animation-delay: 0.1s; }
-    .note2 { top: -35px; right: 30px; animation-delay: 0.7s; }
-    .note3 { top: 10px; right: -5px; animation-delay: 1.2s; }
-
-    @keyframes floatNotes {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      40% { opacity: 1; }
-      100% { transform: translateY(-55px) rotate(25deg); opacity: 0; }
-    }
-
-    .singing-lyrics {
+    .birthday-heading {
       margin-top: 1.2rem;
-      font-size: 2.2rem;
+      font-size: 1.95rem;
       font-weight: 900;
       color: #1e293b;
       letter-spacing: -0.5px;
-      text-transform: lowercase;
-      z-index: 2;
+      animation: popText 1.2s infinite alternate ease-in-out;
     }
 
-    .singing-lyrics span {
-      display: block;
-      color: #ec4899;
-      font-size: 1.7rem;
-      margin-top: 0.3rem;
-      animation: discoText 1.4s infinite alternate ease-in-out;
+    @keyframes popText {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.04); }
     }
 
-    @keyframes discoText {
-      0% { color: #ec4899; transform: scale(1); }
-      100% { color: #8b5cf6; transform: scale(1.06); }
+    /* Cutest Button: Continue to read the letter */
+    .read-letter-btn {
+      margin-top: 1.4rem;
+      background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 13px 26px;
+      border-radius: 50px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4), 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .final-heart-tag {
-      margin-top: 1.2rem;
+    .read-letter-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* --- 7. LETTER MODAL --- */
+    #letterStage {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 160;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(15px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .letter-card {
       background: #ffffff;
-      border: 1.5px solid #f472b6;
-      padding: 9px 24px;
-      border-radius: 30px;
-      color: #db2777;
+      color: #1e293b;
+      border-radius: 24px;
+      max-width: 420px;
+      width: 100%;
+      padding: 2.2rem 1.8rem;
+      box-shadow: 0 0 45px rgba(244, 63, 94, 0.3);
+      position: relative;
+      animation: popNumber 0.4s ease-out;
+    }
+
+    .letter-card h3 {
+      font-size: 1.3rem;
+      color: #e11d48;
+      margin-bottom: 1rem;
+    }
+
+    .letter-card p {
       font-size: 0.95rem;
+      line-height: 1.7;
+      color: #334155;
+      margin-bottom: 1.4rem;
+      white-space: pre-line;
+      text-align: left;
+    }
+
+    .close-letter-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 8px 22px;
+      border-radius: 20px;
+      font-size: 0.88rem;
       font-weight: 700;
-      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.25);
-      z-index: 2;
+      color: #475569;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -795,7 +804,7 @@
   <div class="stars"></div>
   <div class="lunar-haze"></div>
 
-  <!-- BGM AUDIO (Akhiyan Gulab / Jab Tak Mix) -->
+  <!-- BGM AUDIO -->
   <audio id="bgmTrack" loop preload="auto">
     <source src="bgm.mp3" type="audio/mpeg">
   </audio>
@@ -819,7 +828,6 @@
       <input type="password" id="passInput" class="aesthetic-input" placeholder="Password" />
       <button class="glow-btn" onclick="checkCredentials()">Enter 🪐</button>
 
-      <!-- CUSTOM INSTA ERROR MESSAGE & TRY AGAIN BUTTON -->
       <div class="error-container" id="errorContainer">
         <div class="error-msg">Don't you remember your Archie's Insta password? 🥺</div>
         <button class="try-again-btn" onclick="resetLoginInputs()">Try Again</button>
@@ -1026,82 +1034,101 @@ that would have been too easy.
     </div>
   </div>
 
-  <!-- 6. DANCING PANDA STAGE -->
+  <!-- 6. WAVING PANDA FINALE STAGE -->
   <div id="singingStage">
-    <div class="party-glow"></div>
+    <div class="panda-container">
+      <!-- Cutest Vector of the Sitting Panda with Raised Waving Paw matching reference -->
+      <svg class="panda-svg" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Back Sitting Left Foot -->
+        <ellipse cx="95" cy="275" rx="34" ry="24" fill="#1e293b" transform="rotate(-15 95 275)"/>
+        <ellipse cx="85" cy="275" rx="8" ry="6" fill="#475569"/>
+        <ellipse cx="98" cy="265" rx="4" ry="5" fill="#475569"/>
+        <ellipse cx="108" cy="270" rx="4" ry="5" fill="#475569"/>
 
-    <div class="dancing-panda-container">
-      <div class="musical-notes note1">🎵</div>
-      <div class="musical-notes note2">🎶</div>
-      <div class="musical-notes note3">✨</div>
+        <!-- Back Sitting Right Foot -->
+        <ellipse cx="235" cy="275" rx="34" ry="24" fill="#1e293b" transform="rotate(15 235 275)"/>
+        <ellipse cx="245" cy="275" rx="8" ry="6" fill="#475569"/>
+        <ellipse cx="232" cy="265" rx="4" ry="5" fill="#475569"/>
+        <ellipse cx="222" cy="270" rx="4" ry="5" fill="#475569"/>
 
-      <!-- Animated SVG Dancing Panda -->
-      <svg class="panda-svg" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Ears -->
-        <g class="ear-left">
-          <circle cx="75" cy="75" r="38" fill="#111827" stroke="#030712" stroke-width="4"/>
-          <circle cx="75" cy="75" r="20" fill="#f472b6" opacity="0.4"/>
+        <!-- Chubby Panda Body -->
+        <path d="M115 190 C100 230, 100 290, 175 290 C250 290, 250 230, 235 190 Z" fill="#1e293b"/>
+        <!-- White Belly Patch -->
+        <ellipse cx="175" cy="245" rx="55" ry="42" fill="#ffffff"/>
+
+        <!-- Resting Left Arm -->
+        <ellipse cx="195" cy="205" rx="28" ry="17" fill="#1e293b" transform="rotate(22 195 205)"/>
+
+        <!-- Raised Waving Right Arm -->
+        <g class="waving-paw">
+          <path d="M125 185 C95 160, 50 145, 60 115 C70 95, 105 125, 125 155 Z" fill="#1e293b"/>
+          <!-- Paw Pads -->
+          <ellipse cx="70" cy="120" rx="9" ry="7" fill="#475569"/>
+          <circle cx="62" cy="110" r="3" fill="#475569"/>
+          <circle cx="68" cy="106" r="3" fill="#475569"/>
+          <circle cx="76" cy="107" r="3" fill="#475569"/>
         </g>
-        <g class="ear-right">
-          <circle cx="245" cy="75" r="38" fill="#111827" stroke="#030712" stroke-width="4"/>
-          <circle cx="245" cy="75" r="20" fill="#f472b6" opacity="0.4"/>
+
+        <!-- Panda Ears -->
+        <g class="waving-ear-left">
+          <circle cx="118" cy="92" r="28" fill="#1e293b"/>
+        </g>
+        <g class="waving-ear-right">
+          <circle cx="238" cy="85" r="28" fill="#1e293b"/>
         </g>
 
-        <!-- Waving Arms -->
-        <g class="arm-left">
-          <ellipse cx="65" cy="180" rx="22" ry="42" fill="#111827" stroke="#030712" stroke-width="4"/>
-        </g>
-        <g class="arm-right">
-          <ellipse cx="255" cy="180" rx="22" ry="42" fill="#111827" stroke="#030712" stroke-width="4"/>
-        </g>
+        <!-- Big Fluffy Round Head -->
+        <ellipse cx="178" cy="142" rx="76" ry="66" fill="#ffffff" stroke="#1e293b" stroke-width="4"/>
 
-        <!-- Body -->
-        <ellipse cx="160" cy="225" rx="100" ry="80" fill="#111827" stroke="#030712" stroke-width="4"/>
-        <ellipse cx="160" cy="230" rx="68" ry="60" fill="#ffffff"/>
+        <!-- Big Expressive Eye Patches -->
+        <ellipse cx="140" cy="138" rx="22" ry="28" fill="#1e293b" transform="rotate(-15 140 138)"/>
+        <ellipse cx="218" cy="134" rx="22" ry="28" fill="#1e293b" transform="rotate(18 218 134)"/>
 
-        <!-- Little Dancing Feet -->
-        <ellipse cx="110" cy="290" rx="28" ry="18" fill="#111827" stroke="#030712" stroke-width="3"/>
-        <ellipse cx="210" cy="290" rx="28" ry="18" fill="#111827" stroke="#030712" stroke-width="3"/>
+        <!-- Sparkling Pupils -->
+        <circle cx="145" cy="134" r="10" fill="#ffffff"/>
+        <circle cx="147" cy="132" r="4" fill="#0f172a"/>
+        <circle cx="213" cy="130" r="10" fill="#ffffff"/>
+        <circle cx="211" cy="128" r="4" fill="#0f172a"/>
 
-        <!-- Panda Head -->
-        <ellipse cx="160" cy="135" rx="95" ry="80" fill="#ffffff" stroke="#111827" stroke-width="5"/>
+        <!-- Cheerful Eyebrows -->
+        <path d="M132 108 Q142 102 148 107" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M210 105 Q218 100 226 105" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
 
-        <!-- Eye Patches -->
-        <ellipse cx="115" cy="130" rx="26" ry="32" fill="#111827" transform="rotate(-18 115 130)"/>
-        <ellipse cx="205" cy="130" rx="26" ry="32" fill="#111827" transform="rotate(18 205 130)"/>
+        <!-- Soft Pink Cheeks -->
+        <ellipse cx="118" cy="158" rx="12" ry="8" fill="#f43f5e" opacity="0.4"/>
+        <ellipse cx="238" cy="154" rx="12" ry="8" fill="#f43f5e" opacity="0.4"/>
 
-        <!-- Happy Dancing Eyes -->
-        <circle cx="118" cy="126" r="8" fill="#ffffff"/>
-        <circle cx="123" cy="122" r="3" fill="#38bdf8"/>
-        <circle cx="202" cy="126" r="8" fill="#ffffff"/>
-        <circle cx="197" cy="122" r="3" fill="#38bdf8"/>
+        <!-- Cute Panda Nose -->
+        <path d="M172 146 Q178 142 184 146 Q178 152 172 146 Z" fill="#1e293b"/>
 
-        <!-- Cheeks -->
-        <circle cx="82" cy="155" r="16" fill="#fb7185" opacity="0.75"/>
-        <circle cx="238" cy="155" r="16" fill="#fb7185" opacity="0.75"/>
-
-        <!-- Nose -->
-        <path d="M152 144 Q160 140 168 144 Q160 152 152 144 Z" fill="#111827"/>
-
-        <!-- Happy Open Smiling / Singing Mouth -->
-        <path d="M142 155 Q160 145 178 155 Q160 195 142 155 Z" fill="#be185d" stroke="#111827" stroke-width="3"/>
-        <ellipse cx="160" cy="178" rx="12" ry="7" fill="#f472b6"/>
-
-        <!-- Birthday Party Hat -->
-        <polygon points="160,30 135,90 185,90" fill="#ec4899" stroke="#be185d" stroke-width="3"/>
-        <circle cx="160" cy="28" r="8" fill="#fbbf24"/>
-        <circle cx="147" cy="70" r="4" fill="#ffffff"/>
-        <circle cx="170" cy="75" r="4" fill="#ffffff"/>
-        <circle cx="158" cy="55" r="4" fill="#ffffff"/>
+        <!-- Big Smiling Happy Mouth -->
+        <path d="M165 156 Q178 150 191 156 Q178 185 165 156 Z" fill="#be185d" stroke="#1e293b" stroke-width="2.5"/>
+        <ellipse cx="178" cy="172" rx="8" ry="5" fill="#fb7185"/>
       </svg>
     </div>
 
-    <div class="singing-lyrics">
-      happy birthday
-      <span>dancing for you, Luna! 🐼🎉💃</span>
-    </div>
+    <!-- Clean, Simple Title -->
+    <h1 class="birthday-heading">Happy Birthday, Luna! 🎂✨🐼💖</h1>
 
-    <div class="final-heart-tag">Made with endless love for Luna 🌙💖</div>
+    <!-- Cute Button to Open the Letter -->
+    <button class="read-letter-btn" onclick="openLetter()">
+      Continue to read the letter 💌
+    </button>
+  </div>
+
+  <!-- 7. LETTER SCREEN -->
+  <div id="letterStage">
+    <div class="letter-card">
+      <h3>Dear Luna ✨</h3>
+      <p>
+        Happy Birthday! 🎂
+
+        I hope this little journey brought a genuine smile to your face today. You deserve all the warmth, happiness, and starry magic the universe has to offer.
+
+        Thank you for being uniquely you. Keep shining bright! 🌙💖
+      </p>
+      <button class="close-letter-btn" onclick="closeLetter()">Back to Panda 🐼</button>
+    </div>
   </div>
 
   <script>
@@ -1426,7 +1453,7 @@ that would have been too easy.
       }
     }
 
-    /* --- CAKE & DANCING PANDA TRANSITION --- */
+    /* --- CAKE & PANDA TRANSITION --- */
     let candleBlown = false;
 
     function openCakeStage() {
@@ -1471,27 +1498,36 @@ that would have been too easy.
       flame.style.transform = 'scale(0.1)';
       smoke.style.display = 'block';
 
-      // Transition smoothly into Dancing Panda Stage
       setTimeout(() => {
         document.getElementById('cakeStage').style.display = 'none';
         const singingStage = document.getElementById('singingStage');
         singingStage.style.display = 'flex';
 
-        // Start the Birthday Song
         playBirthdaySong();
 
-        // Celebration Confetti Cannon
-        const confettiInterval = setInterval(() => {
-          confetti({
-            particleCount: 50,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#f472b6', '#38bdf8', '#fbbf24', '#a855f7']
-          });
-        }, 800);
-
-        setTimeout(() => clearInterval(confettiInterval), 6000);
+        // Celebration Confetti
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 },
+          colors: ['#f43f5e', '#38bdf8', '#fbbf24', '#1e293b']
+        });
       }, 900);
+    }
+
+    /* --- LETTER MODAL HANDLERS --- */
+    function openLetter() {
+      document.getElementById('letterStage').style.display = 'flex';
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.5 },
+        colors: ['#f43f5e', '#fb7185', '#ffffff']
+      });
+    }
+
+    function closeLetter() {
+      document.getElementById('letterStage').style.display = 'none';
     }
 
     document.addEventListener('keypress', function (e) {
