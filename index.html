@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +15,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Comic Sans MS', 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -646,7 +647,7 @@
       box-shadow: 35px 8px 0 0 #f472b6, 75px 12px 0 0 #f472b6, 120px 6px 0 0 #f472b6, 170px 10px 0 0 #f472b6, 210px 7px 0 0 #f472b6;
     }
 
-    /* --- 6. REAL PANDA FINALE STAGE --- */
+    /* --- 6. PANDA FINALE STAGE --- */
     #singingStage {
       display: none;
       position: fixed;
@@ -662,8 +663,8 @@
     }
 
     .panda-image-wrapper {
-      width: 260px;
-      height: 260px;
+      width: 250px;
+      height: 250px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -696,7 +697,6 @@
       100% { transform: scale(1.03); }
     }
 
-    /* Cute Button: Continue to read the letter */
     .read-letter-btn {
       margin-top: 1.5rem;
       background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
@@ -715,54 +715,157 @@
       transform: scale(0.95);
     }
 
-    /* --- 7. LETTER SCREEN --- */
-    #letterStage {
+    /* --- 7. INTERACTIVE 24-TAP ENVELOPE STAGE --- */
+    #envelopeStage {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 160;
-      background: rgba(3, 7, 18, 0.88);
-      backdrop-filter: blur(15px);
+      z-index: 155;
+      background: radial-gradient(circle at 50% 30%, #fff1f2 0%, #fecdd3 60%, #fda4af 100%);
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       padding: 1.5rem;
       text-align: center;
     }
 
-    .letter-card {
-      background: #ffffff;
+    .tap-counter-text {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #881337;
+      margin-bottom: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .envelope-box {
+      width: 250px;
+      height: 175px;
+      background: #ffe4e6;
+      border: 3px solid #e11d48;
+      border-radius: 16px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 20px 35px rgba(225, 29, 72, 0.25);
+      transition: transform 0.1s ease;
+      user-select: none;
+    }
+
+    .envelope-box:active {
+      transform: scale(0.94);
+    }
+
+    /* Envelope Top Flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 122px solid transparent;
+      border-right: 122px solid transparent;
+      border-top: 95px solid #f43f5e;
+      border-radius: 8px 8px 0 0;
+      transform-origin: top;
+      transition: transform 0.5s ease;
+    }
+
+    /* Wax Seal Heart */
+    .wax-seal {
+      width: 52px;
+      height: 52px;
+      background: radial-gradient(circle, #be123c, #881337);
+      border-radius: 50%;
+      position: absolute;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 12px rgba(136, 19, 55, 0.4);
+      border: 2px solid #ffffff;
+    }
+
+    .tap-bubble {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #be123c;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* --- 8. LETTER MODAL --- */
+    #letterStage {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 170;
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .letter-scroll-card {
+      background: #fdfbf7;
       color: #1e293b;
       border-radius: 24px;
-      max-width: 420px;
+      max-width: 540px;
       width: 100%;
-      padding: 2.2rem 1.8rem;
-      box-shadow: 0 0 45px rgba(244, 63, 94, 0.3);
+      max-height: 84vh;
+      overflow-y: auto;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 0 50px rgba(244, 63, 94, 0.4);
       position: relative;
-      animation: popNumber 0.4s ease-out;
+      border: 1px solid rgba(225, 29, 72, 0.2);
     }
 
-    .letter-card h3 {
-      font-size: 1.3rem;
+    .letter-scroll-card::-webkit-scrollbar { width: 6px; }
+    .letter-scroll-card::-webkit-scrollbar-thumb {
+      background: #f43f5e;
+      border-radius: 10px;
+    }
+
+    .letter-header-title {
+      font-size: 1.6rem;
       color: #e11d48;
-      margin-bottom: 1rem;
+      font-weight: 900;
+      margin-bottom: 1.4rem;
+      text-align: center;
+      letter-spacing: -0.5px;
     }
 
-    .letter-card p {
-      font-size: 0.95rem;
-      line-height: 1.7;
+    .letter-body {
+      font-size: 0.98rem;
+      line-height: 1.85;
       color: #334155;
-      margin-bottom: 1.4rem;
       white-space: pre-line;
       text-align: left;
     }
 
+    .letter-signature {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #e11d48;
+      text-align: right;
+    }
+
     .close-letter-btn {
+      margin-top: 1.2rem;
+      width: 100%;
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 8px 22px;
-      border-radius: 20px;
-      font-size: 0.88rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 0.92rem;
       font-weight: 700;
       color: #475569;
       cursor: pointer;
@@ -1010,26 +1113,200 @@ that would have been too easy.
       <img src="panda.png" alt="Cute Panda" class="actual-panda-img" id="pandaImg" onerror="this.src='https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=600&q=80'" />
     </div>
 
-    <!-- Clean, Simple Title -->
     <h1 class="birthday-heading">Happy Birthday, Luna! 🎂✨🐼💖</h1>
 
-    <!-- Cute Button to Open the Letter -->
-    <button class="read-letter-btn" onclick="openLetter()">
+    <button class="read-letter-btn" onclick="openEnvelopeStage()">
       Continue to read the letter 💌
     </button>
   </div>
 
-  <!-- 7. LETTER SCREEN -->
+  <!-- 7. INTERACTIVE 24-TAP ENVELOPE STAGE -->
+  <div id="envelopeStage">
+    <div class="tap-counter-text" id="envelopeCounter">Click on the envelope 24 times to unlock... (0 / 24) ✉️</div>
+
+    <div class="envelope-box" id="clickableEnvelope" onclick="handleEnvelopeTap()">
+      <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="wax-seal">💖</div>
+    </div>
+
+    <div class="tap-bubble" id="tapStatusText">Keep tapping! 💌</div>
+  </div>
+
+  <!-- 8. FULL LETTER SCREEN -->
   <div id="letterStage">
-    <div class="letter-card">
-      <h3>Dear Luna ✨</h3>
-      <p>
-        Happy Birthday! 🎂
+    <div class="letter-scroll-card">
+      <h2 class="letter-header-title">To Luna 🌙💌</h2>
+      <div class="letter-body">
+Roses are red,
+Violets are blue,
+The stars are countless,
+But somehow, I got to know you.
 
-        I hope this little journey brought a genuine smile to your face today. You deserve all the warmth, happiness, and starry magic the universe has to offer.
+Okay... I know that wasn't exactly the greatest poem ever written. 😭
 
-        Thank you for being uniquely you. Keep shining bright! 🌙💖
-      </p>
+But after making you enter a Lunar Portal, accept completely unnecessary terms and conditions, chase a button seven times, survive a cuteness scan, and apparently crash an entire system...
+
+I think I've earned the right to write one terrible poem.
+
+So, before anything else—
+Happy Birthday, Luna. 🌙🎂
+
+✨ Where It All Began
+I don't really know where to begin.
+Maybe 14 June.
+A date that probably looked completely ordinary when it happened, but somehow became one of those dates that stayed.
+
+Two years can sound like just a number.
+But when I look back at those two years, I don't see just classes, exams, college, vans, corridors, and ordinary days.
+I see memories.
+
+The conversations.
+The laughter.
+The letters.
+The random little moments.
+The van rides.
+The times you played with my hair while I was sleeping.
+The first time you held my hand.
+The stairs.
+The countless moments that probably looked completely ordinary to everyone else.
+
+Somehow, those ordinary moments became some of my favourite memories.
+And that's probably the strange thing about life.
+We don't always realize we're living through the moments we'll miss someday.
+Sometimes we only understand it later.
+We look back and think:
+"I didn't know those were the good old days."
+I think those two years became exactly that.
+
+💌 Your Letters
+I don't think you ever realized how much happiness those little pages could bring.
+I'd read them in the morning and somehow end up smiling like an idiot.
+Sometimes I'd read them again.
+Not because I didn't understand what you'd written—
+but because there was something special about having a piece of your thoughts sitting there with me.
+You could write pages and pages, and somehow I'd still want to know what the next page said.
+Those letters became part of my mornings.
+And I think that's one of the reasons I remember that time so clearly.
+
+You Changed the Way I Remember Things
+I was never particularly good at remembering dates.
+Then somehow, you changed that.
+14 June.
+The day we met.
+And then there's 1st of August —
+the day I started building this website from scratch.
+It's funny how a person can become part of your memory so deeply that even dates begin to mean something.
+Things I probably would've forgotten became things I actually remembered.
+
+🌹 A Little More Poetry
+Roses are red,
+The night sky is blue,
+If memories were stars,
+I'd have a whole sky of you.
+
+Not because every moment was perfect.
+Not because everything stayed the same.
+But because every little moment added something to those years.
+A laugh.
+A conversation.
+A silly argument.
+A letter.
+A random day.
+A completely forgettable moment that somehow became unforgettable.
+And together, they became a chapter I'll always be glad I lived.
+
+🌸 Some Stories Stay With Us
+There are also parts of your story that I remember because you trusted me enough to share them.
+One of them is Anoop.
+I know how long that chapter has existed in your life, and how much it has meant to you.
+From the time you started liking him, through all the years of carrying that feeling, to those little hopes and dreams you've had about what might happen someday.
+
+Maybe one day the story will turn out exactly the way you've imagined.
+Maybe life will take it somewhere completely unexpected.
+None of us really knows what the future has written.
+But I hope, whatever happens, you never lose the beautiful part of yourself that knows how to care deeply.
+
+There's a quote that reminds me of that:
+"If you truly love a flower, you don't pick it. You let it grow."
+
+Maybe that's what growing up teaches us.
+That sometimes we care about people without knowing where the story will end.
+Sometimes we hope.
+Sometimes we wait.
+Sometimes things change.
+And sometimes life writes a completely different chapter.
+But regardless of how any story turns out, I hope yours leads you somewhere that makes you genuinely happy.
+That's what matters in the end.
+
+🎓 A New Chapter
+And now you're stepping into something completely new.
+New college.
+New people.
+New places.
+New friendships.
+New memories waiting to happen.
+
+And I genuinely hope this chapter becomes one of the best ones you've ever had.
+I hope you meet people who make you laugh until your stomach hurts.
+I hope you find friends who stay beside you when things aren't easy.
+I hope you discover things you're passionate about.
+I hope you try things that scare you.
+I hope you fail sometimes, learn from it, laugh about it later, and keep going.
+And most importantly—
+I hope you never stop being yourself.
+
+⭐ Wherever Life Takes Us
+I don't know where life will take either of us from here.
+Maybe we'll make hundreds of new memories.
+Maybe we'll become busier.
+Maybe we'll talk less.
+Maybe we'll randomly meet one day years from now and laugh about how much has changed.
+Maybe life will surprise us completely.
+I don't know.
+
+But I do know one thing:
+I'm grateful our paths crossed.
+Grateful for the letters.
+Grateful for the conversations.
+Grateful for the laughter.
+Grateful for the van rides.
+Grateful for all the ridiculous little moments.
+Grateful for the memories I didn't realize would become important.
+And most of all—
+grateful that somewhere along the road of life, there happened to be a girl named Luna who became such a memorable part of mine.
+
+🌙 One Last Thing
+There are billions of people in this world.
+Millions of stories happening at the same time.
+Countless roads we could have taken.
+And somehow, on one of those roads,
+I met you.
+
+Maybe it was coincidence.
+Maybe it was timing.
+Maybe it was simply life doing what it does.
+Whatever it was...
+I'm glad it happened.
+And if I could thank anything for it, I'd probably thank all the stars that somehow brought you into my life. ⭐
+
+So here's to you.
+To another year.
+Another chapter.
+Another collection of memories waiting to happen.
+Another birthday.
+And hopefully, countless reasons for you to smile.
+
+Happy Birthday, Luna. 🌙🎂
+Keep smiling.
+Keep being weird.
+Keep being kind.
+Keep chasing the things that make you happy.
+And wherever life takes you next, I hope it takes you somewhere beautiful.
+
+Thank you for being one of the most memorable chapters of these years.
+      </div>
+      <div class="letter-signature">— Archie 🌙</div>
+
       <button class="close-letter-btn" onclick="closeLetter()">Back to Panda 🐼</button>
     </div>
   </div>
@@ -1282,7 +1559,7 @@ that would have been too easy.
 
         document.getElementById('laserBeam').style.display = 'none';
 
-        // STOP BGM ON OVERLOAD EXPLOSION
+        // Stop background mix when overload occurs
         stopMusic();
 
         setTimeout(() => {
@@ -1302,7 +1579,7 @@ that would have been too easy.
       document.getElementById('dangerAlert').style.display = 'flex';
     }
 
-    /* --- REALISTIC BLOW SOUND SYNTHESIS --- */
+    /* --- PUFF SOUND SYNTHESIS --- */
     function playBlowSound() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1340,7 +1617,7 @@ that would have been too easy.
       }
     }
 
-    /* --- PLAY BIRTHDAY SONG --- */
+    /* --- BIRTHDAY SONG AUDIO --- */
     function playBirthdaySong() {
       const bdayAudio = document.getElementById('birthdayTrack');
       if (bdayAudio) {
@@ -1356,7 +1633,7 @@ that would have been too easy.
       }
     }
 
-    /* --- CAKE & PANDA TRANSITION --- */
+    /* --- CAKE STAGE --- */
     let candleBlown = false;
 
     function openCakeStage() {
@@ -1417,19 +1694,62 @@ that would have been too easy.
       }, 900);
     }
 
-    /* --- LETTER MODAL HANDLERS --- */
-    function openLetter() {
-      document.getElementById('letterStage').style.display = 'flex';
+    /* --- 24-TAP ENVELOPE LOGIC --- */
+    let envelopeTaps = 0;
+    const REQUIRED_TAPS = 24;
+
+    function openEnvelopeStage() {
+      document.getElementById('singingStage').style.display = 'none';
+      document.getElementById('envelopeStage').style.display = 'flex';
+    }
+
+    function handleEnvelopeTap() {
+      envelopeTaps++;
+      const counterEl = document.getElementById('envelopeCounter');
+      const statusText = document.getElementById('tapStatusText');
+      const envelope = document.getElementById('clickableEnvelope');
+
+      counterEl.innerText = `Click on the envelope 24 times to unlock... (${envelopeTaps} / ${REQUIRED_TAPS}) ✉️`;
+
+      // Visual feedback: wiggle and mini heart confetti
+      envelope.style.transform = envelopeTaps % 2 === 0 ? 'rotate(4deg) scale(0.97)' : 'rotate(-4deg) scale(0.97)';
+      setTimeout(() => {
+        envelope.style.transform = 'rotate(0deg) scale(1)';
+      }, 120);
+
       confetti({
-        particleCount: 90,
-        spread: 70,
-        origin: { y: 0.5 },
-        colors: ['#f43f5e', '#fb7185', '#ffffff']
+        particleCount: 7,
+        spread: 45,
+        origin: { y: 0.55 },
+        colors: ['#e11d48', '#f43f5e', '#fda4af']
       });
+
+      if (envelopeTaps === 6) statusText.innerText = "Keep going, Luna! 💖";
+      if (envelopeTaps === 12) statusText.innerText = "Halfway there! 💌✨";
+      if (envelopeTaps === 18) statusText.innerText = "Almost unlocked... 🌸";
+      if (envelopeTaps === 23) statusText.innerText = "Just ONE more tap! 🥺";
+
+      if (envelopeTaps >= REQUIRED_TAPS) {
+        document.getElementById('envelopeFlap').style.transform = 'rotateX(180deg)';
+        statusText.innerText = "Unlocked! Opening letter... 💌✨";
+
+        confetti({
+          particleCount: 180,
+          spread: 100,
+          origin: { y: 0.5 },
+          colors: ['#f43f5e', '#fb7185', '#ffffff', '#fbbf24']
+        });
+
+        setTimeout(() => {
+          document.getElementById('envelopeStage').style.display = 'none';
+          document.getElementById('letterStage').style.display = 'flex';
+        }, 900);
+      }
     }
 
     function closeLetter() {
       document.getElementById('letterStage').style.display = 'none';
+      document.getElementById('singingStage').style.display = 'flex';
     }
 
     document.addEventListener('keypress', function (e) {
